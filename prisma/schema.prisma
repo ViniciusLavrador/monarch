@@ -61,3 +61,48 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+// Business Related Stuff (Not Models...)
+enum Status {
+    ACTIVE
+    INACTIVE
+    DELETED
+}
+
+// Business Models
+
+// Properties
+model PropertyType {
+    id Int @id @default(autoincrement())
+
+    name   String
+    status Status @default(INACTIVE)
+
+    properties Property[]
+}
+
+model Property {
+    id Int @id @default(autoincrement())
+
+    name   String
+    status Status @default(INACTIVE)
+
+    type   PropertyType @relation(fields: [typeId], references: [id])
+    typeId Int
+}
+
+model PropertyAddress {
+    id Int @id @default(autoincrement())
+
+    street                 String
+    number                 String
+    zipCode                String
+    city                   String
+    State                  String
+    Country                String
+    additionalAddressLine1 String?
+    additionalAddressLine2 String?
+
+    lat  Decimal? @db.Decimal(10, 6)
+    long Decimal? @db.Decimal(10, 6)
+}
