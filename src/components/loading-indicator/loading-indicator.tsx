@@ -5,15 +5,15 @@ import { Transition } from "react-transition-group";
 
 const LoadingIndicator: React.FC<{ show: boolean }> = ({ show }) => {
   const animationClasses = {
-    entering: "animate-in slide-in-from-right duration-700",
-    entered: "animate-in slide-in-from-right duration-700",
-    exiting: "animate-out slide-out-to-right duration-700",
-    exited: "animate-out slide-out-to-right duration-700",
+    entering: "animate-in slide-in-from-right",
+    entered: "animate-in slide-in-from-right",
+    exiting: "animate-out slide-out-to-right",
+    exited: "",
     unmounted: "",
   };
 
   return (
-    <Transition in={show} timeout={700} unmountOnExit>
+    <Transition in={show} timeout={300} unmountOnExit>
       {(state) => (
         <div
           className={classNames(

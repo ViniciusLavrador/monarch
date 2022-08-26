@@ -6,20 +6,20 @@ import superjson from "superjson";
 import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import LoadingIndicator from "../components/loading-indicator/loading-indicator";
-import { useState } from "react";
 
-import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useAtom } from "jotai";
+import loadingAtom from "../jotai/atoms/loading";
 
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => {
-  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useAtom(loadingAtom);
 
   return (
     <SessionProvider session={session}>
-      <button className="text-white" onClick={() => setShow(!show)}>
+      <button className="text-white" onClick={() => setLoading(!loading)}>
         HERE
       </button>
       <Component {...pageProps} />
-      <LoadingIndicator show={show} />
+      <LoadingIndicator show={loading} />
     </SessionProvider>
   );
 };
