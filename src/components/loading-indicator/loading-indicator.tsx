@@ -18,11 +18,7 @@ const LoadingIndicator: React.FC<{
       className="fixed flex flex-row items-center h-16 pl-4 bg-yellow-500 shadow-lg w-28 -right-4 bottom-10"
     >
       <div className="relative w-8 h-8">
-        <Image
-          src="/icons/loading/ball-triangle.svg"
-          layout="fill"
-          alt="Loading indicator"
-        />
+        <Image src="/icons/loading/ball-triangle.svg" layout="fill" alt="Loading indicator" />
       </div>
     </Transition>
   );

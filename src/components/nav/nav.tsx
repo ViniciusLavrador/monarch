@@ -1,9 +1,5 @@
 import { Transition } from "@headlessui/react";
-import {
-  MenuIcon,
-  XIcon,
-} from "@heroicons/react/solid";
-import classNames from "classnames";
+import { MenuIcon, XIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -33,17 +29,12 @@ const CloseButton: React.FC<{
 
 const Logo: React.FC = () => (
   <div className="relative w-20 h-20">
-    <Image
-      src="/monarch-logo.svg"
-      layout="fill"
-      alt="Monarch logo"
-    />
+    <Image src="/monarch-logo.svg" layout="fill" alt="Monarch logo" />
   </div>
 );
 
 const Nav: React.FC = () => {
-  const [showNavbar, setShowNavbar] =
-    useState(false);
+  const [showNavbar, setShowNavbar] = useState(false);
   return (
     <>
       <div className="flex flex-row items-center justify-between w-full gap-5 p-10">
@@ -61,11 +52,7 @@ const Nav: React.FC = () => {
         >
           <div className="h-[90%] bg-valhalla-400 shadow-lg rounded-xl p-4 overflow-y-auto w-80">
             <div className="flex flex-row justify-end">
-              <CloseButton
-                onClick={() =>
-                  setShowNavbar(!showNavbar)
-                }
-              />
+              <CloseButton onClick={() => setShowNavbar(!showNavbar)} />
             </div>
           </div>
         </Transition>
@@ -79,11 +66,7 @@ const Nav: React.FC = () => {
           leaveFrom="translate-x-0 opacity-100"
           leaveTo="translate-x-full opacity-0"
         >
-          <MenuButton
-            onClick={() =>
-              setShowNavbar(!showNavbar)
-            }
-          />
+          <MenuButton onClick={() => setShowNavbar(!showNavbar)} />
         </Transition>
       </div>
     </>

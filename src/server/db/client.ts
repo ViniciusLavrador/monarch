@@ -27,7 +27,9 @@ prisma.$use(async (params, next) => {
   }
   if (params.action === "delete") {
     params.action = "update";
-    params.args["data"] = { status: Status.DELETED };
+    params.args["data"] = {
+      status: Status.DELETED,
+    };
   }
 
   if (params.action === "deleteMany") {
@@ -35,7 +37,9 @@ prisma.$use(async (params, next) => {
     if (params.args.data !== undefined) {
       params.args.data["status"] = Status.DELETED;
     } else {
-      params.args["data"] = { status: Status.DELETED };
+      params.args["data"] = {
+        status: Status.DELETED,
+      };
     }
   }
 
