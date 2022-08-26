@@ -2,6 +2,7 @@ import type { GetServerSideProps, NextPage } from 'next';
 import { Session } from 'next-auth';
 
 import Head from 'next/head';
+import Link from 'next/link';
 import { getServerSidePropsWithSession } from '../utils/auth';
 
 type HomeProps = { sesh: Session };
@@ -29,6 +30,7 @@ const Home: NextPage<HomeProps> = (props) => {
         <div className='pt-6 text-2xl text-blue-500 flex justify-center items-center w-full'>
           sesh: {props.sesh.user?.name}
         </div>
+        <Link href='/api/auth/signout'>Sign Out</Link>
       </main>
     </>
   );

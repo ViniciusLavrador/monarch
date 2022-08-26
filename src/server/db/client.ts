@@ -1,7 +1,7 @@
 // src/server/db/client.ts
-import { PrismaClient, Status } from '@prisma/client';
+import { Prisma, PrismaClient, Status } from '@prisma/client';
 import { env } from '../../env/server.mjs';
-
+import { config } from 'node-config-ts';
 declare global {
   var prisma: PrismaClient | undefined;
 }
@@ -19,6 +19,12 @@ if (env.NODE_ENV !== 'production') {
 // Middleware
 // SOFT DELETE RECORDS
 prisma.$use(async (params, next) => {
+  if (
+    !params.model ||
+    !(config.db.softDelete.models as Prisma.ModelName[]).includes(params.model)
+  ) {
+    return next(params);
+  }
   if (params.action === 'delete') {
     params.action = 'update';
     params.args['data'] = { status: Status.DELETED };

@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate & node-config-ts"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
@@ -20,6 +20,7 @@
     "@trpc/server": "^9.26.2",
     "next": "12.2.3",
     "next-auth": "^4.10.3",
+    "node-config-ts": "^3.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-query": "^3.39.2",
