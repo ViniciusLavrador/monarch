@@ -7,17 +7,13 @@ import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import LoadingIndicator from "../components/loading-indicator/loading-indicator";
 
-import { useAtom } from "jotai";
-import loadingAtom from "../jotai/atoms/loading";
+import useLoading from "../hooks/use-loading/use-loading";
 
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => {
-  const [loading, setLoading] = useAtom(loadingAtom);
+  const [loading] = useLoading();
 
   return (
     <SessionProvider session={session}>
-      <button className="text-white" onClick={() => setLoading(!loading)}>
-        HERE
-      </button>
       <Component {...pageProps} />
       <LoadingIndicator show={loading} />
     </SessionProvider>

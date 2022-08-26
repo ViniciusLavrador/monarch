@@ -3,7 +3,6 @@ import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 
 import Head from "next/head";
-import LoadingIndicator from "../components/loading-indicator/loading-indicator";
 import { getServerSidePropsWithSession } from "../utils/auth";
 
 type HomeProps = { sesh: Session };
