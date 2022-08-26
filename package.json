@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pscale connect monarchdb main --port 3309 & next dev",
+    "dev": "pscale connect monarchdb main --port 3309 --execute 'next dev'",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
