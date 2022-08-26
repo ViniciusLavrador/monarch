@@ -2,7 +2,9 @@ import Image from "next/image";
 
 import { Transition } from "@headlessui/react";
 
-const LoadingIndicator: React.FC<{ show: boolean }> = ({ show }) => {
+const LoadingIndicator: React.FC<{
+  show: boolean;
+}> = ({ show }) => {
   return (
     <Transition
       appear={true}
@@ -13,10 +15,14 @@ const LoadingIndicator: React.FC<{ show: boolean }> = ({ show }) => {
       leave="transition-transform duration-300"
       leaveFrom="translate-x-0"
       leaveTo="translate-x-full"
-      className="w-28 h-16 pl-4 fixed -right-4 bottom-10 flex flex-row items-center bg-yellow-500 shadow-lg"
+      className="fixed flex flex-row items-center h-16 pl-4 bg-yellow-500 shadow-lg w-28 -right-4 bottom-10"
     >
-      <div className="w-8 h-8 relative">
-        <Image src="/icons/loading/ball-triangle.svg" layout="fill" alt="Loading indicator" />
+      <div className="relative w-8 h-8">
+        <Image
+          src="/icons/loading/ball-triangle.svg"
+          layout="fill"
+          alt="Loading indicator"
+        />
       </div>
     </Transition>
   );
