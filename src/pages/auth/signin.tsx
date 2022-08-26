@@ -11,8 +11,6 @@ interface SignInPageProps {
 export const getServerSideProps: GetServerSideProps<SignInPageProps> = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  console.log({ session });
-
   if (session && session.user) {
     return {
       redirect: {
