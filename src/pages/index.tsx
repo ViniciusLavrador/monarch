@@ -1,8 +1,8 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
+import { signOut } from "next-auth/react";
 
 import Head from "next/head";
-import Link from "next/link";
 import { getServerSidePropsWithSession } from "../utils/auth";
 
 type HomeProps = { sesh: Session };
@@ -30,7 +30,18 @@ const Home: NextPage<HomeProps> = (props) => {
                 <div className="pt-6 text-2xl text-blue-500 flex justify-center items-center w-full">
                     sesh: {props.sesh.user?.name}
                 </div>
-                <Link href="/api/auth/signout">Sign Out</Link>
+                <button
+                    onClick={() => signOut()}
+                    className="
+                                group relative w-full flex justify-center py-2 px-4 
+                                border border-transparent text-sm font-medium rounded-md
+                                text-white hover:bg-yellow-600 bg-yellow-500
+                                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-300
+                                transition-colors ease-in-out
+                            "
+                >
+                    Sair
+                </button>
             </main>
         </>
     );
