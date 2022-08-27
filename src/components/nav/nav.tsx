@@ -1,7 +1,10 @@
 import { Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/solid";
+import { useClickOutside, useHotkeys } from "@mantine/hooks";
 import Image from "next/image";
-import { useState } from "react";
+import { LegacyRef, PropsWithChildren, useEffect, useState } from "react";
+
+type FCWithChildren<P = {}> = React.FC<PropsWithChildren<P>>;
 
 const MenuButton: React.FC<{
   onClick: () => void;
@@ -20,7 +23,7 @@ const CloseButton: React.FC<{
 }> = ({ onClick }) => (
   <button
     type="button"
-    className="z-50 flex w-10 h-10 text-yellow-500 transition-colors rounded-lg cursor-pointer bg-valhalla-50 place-content-center hover:bg-yellow-500 hover:text-valhalla-50"
+    className="text-valhalla-50 transition-colors cursor-pointer place-content-center hover:text-yellow-500"
     onClick={onClick}
   >
     <XIcon className="w-6 h-6 m-auto" />
@@ -33,41 +36,53 @@ const Logo: React.FC = () => (
   </div>
 );
 
-const Nav: React.FC = () => {
+type TransitionProps = {
+  show?: boolean;
+  className?: string;
+  appear?: boolean;
+};
+
+const BaseNavigationTransition: FCWithChildren<TransitionProps> = ({ children, ...props }) => (
+  <Transition
+    enter="transition-all duration-300"
+    enterFrom="md:translate-x-full md:translate-y-0 translate-y-full opacity-0"
+    enterTo="md:translate-x-0 md:translate-y-0 translate-y-0 opacity-100"
+    leave="transition-all duration-300"
+    leaveFrom="md:translate-x-0 translate-y-0 opacity-100"
+    leaveTo="md:translate-x-full md:translate-y-0 translate-y-full opacity-0"
+    {...props}
+  >
+    {children}
+  </Transition>
+);
+
+const Nav: FCWithChildren = ({ children }) => {
   const [showNavbar, setShowNavbar] = useState(false);
+  const ref = useClickOutside(() => setShowNavbar(false));
+
+  useHotkeys([["Escape", () => showNavbar && setShowNavbar(false)]]);
+
   return (
     <>
       <div className="flex flex-row items-center justify-between w-full gap-5 p-10">
         <Logo />
-        <Transition
+        <BaseNavigationTransition
           appear={true}
           show={showNavbar}
-          enter="transition-all duration-300"
-          enterFrom="translate-x-full opacity-0"
-          enterTo="translate-x-0 opacity-100"
-          leave="transition-all duration-300"
-          leaveFrom="translate-x-0 opacity-100"
-          leaveTo="translate-x-full opacity-0"
-          className="fixed top-0 z-40 flex items-center h-screen right-10 w-fit"
+          className="fixed top-0 z-40 flex items-center h-screen w-full right-0 md:right-10 md:w-80"
         >
-          <div className="h-[90%] bg-valhalla-400 shadow-lg rounded-xl p-4 overflow-y-auto w-80">
+          <div
+            className="h-full md:h-[90%] bg-valhalla-400 shadow-lg rounded-xl p-4 overflow-y-auto w-full"
+            ref={ref}
+          >
             <div className="flex flex-row justify-end">
               <CloseButton onClick={() => setShowNavbar(!showNavbar)} />
             </div>
           </div>
-        </Transition>
-        <Transition
-          appear={true}
-          show={!showNavbar}
-          enter="transition-all duration-300"
-          enterFrom="translate-x-full opacity-0"
-          enterTo="translate-x-0 opacity-100"
-          leave="transition-all duration-300"
-          leaveFrom="translate-x-0 opacity-100"
-          leaveTo="translate-x-full opacity-0"
-        >
+        </BaseNavigationTransition>
+        <BaseNavigationTransition appear={true} show={!showNavbar}>
           <MenuButton onClick={() => setShowNavbar(!showNavbar)} />
-        </Transition>
+        </BaseNavigationTransition>
       </div>
     </>
   );
