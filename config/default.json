@@ -1,11 +1,7 @@
 {
   "db": {
     "softDelete": {
-      "models": [
-        "PropertyType",
-        "Property",
-        "PropertyAddress"
-      ]
+      "models": ["PropertyType", "Property", "PropertyAddress"]
     }
   }
 }

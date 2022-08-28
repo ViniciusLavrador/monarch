@@ -2,9 +2,7 @@ import { Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/solid";
 import { useClickOutside, useHotkeys } from "@mantine/hooks";
 import Image from "next/image";
-import { LegacyRef, PropsWithChildren, useEffect, useState } from "react";
-
-type FCWithChildren<P = {}> = React.FC<PropsWithChildren<P>>;
+import { useState } from "react";
 
 const MenuButton: React.FC<{
   onClick: () => void;
@@ -64,7 +62,7 @@ const Nav: FCWithChildren = ({ children }) => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-between w-full gap-5 p-10">
+      <div className="container mx-auto flex flex-row items-center justify-between w-full gap-5 py-10 px-5 md:px-0">
         <Logo />
         <BaseNavigationTransition
           appear={true}

@@ -10,26 +10,26 @@ type ServerSideContext = GetServerSidePropsContext<ParsedUrlQuery, PreviewData>;
 type GetAuthenticatedSession = (ctx: ServerSideContext) => Promise<Session | null>;
 
 export const getAuthenticatedSession: GetAuthenticatedSession = async (ctx) =>
-    await getServerSession(ctx.req, ctx.res, nextAuthOptions);
+  await getServerSession(ctx.req, ctx.res, nextAuthOptions);
 
 type GetServerSidePropsWithSessionInContext<T extends Record<string, any>> = (
-    ctx: GetServerSidePropsContext & { session: Session },
+  ctx: GetServerSidePropsContext & { session: Session },
 ) => Promise<GetServerSidePropsResult<T>>;
 
 export const getServerSidePropsWithSession = <T extends Record<string, any>>(
-    fn: GetServerSidePropsWithSessionInContext<T>,
+  fn: GetServerSidePropsWithSessionInContext<T>,
 ) => {
-    return async (ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<T>> => {
-        const session = await getAuthenticatedSession(ctx);
+  return async (ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<T>> => {
+    const session = await getAuthenticatedSession(ctx);
 
-        if (!session)
-            return {
-                redirect: {
-                    permanent: false,
-                    destination: SIGNIN_ROUTE,
-                },
-            };
+    if (!session)
+      return {
+        redirect: {
+          permanent: false,
+          destination: SIGNIN_ROUTE,
+        },
+      };
 
-        return fn({ ...ctx, session });
-    };
+    return fn({ ...ctx, session });
+  };
 };

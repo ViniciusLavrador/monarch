@@ -10,7 +10,8 @@
     "lint": "next lint",
     "test": "jest --watch",
     "postinstall": "prisma generate && node-config-ts",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prettify": "prettier --write ."
   },
   "dependencies": {
     "@formkit/auto-animate": "^1.0.0-beta.3",
