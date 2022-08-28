@@ -5,9 +5,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 html {
-  @apply h-full bg-gradient-to-b from-valhalla-500 to-valhalla-700;
+  @apply h-full;
 }
 
 body {
-  @apply h-full;
+  @apply h-full m-0;
+  @apply bg-gradient-to-b from-valhalla-500 to-valhalla-700 bg-no-repeat bg-fixed;
 }

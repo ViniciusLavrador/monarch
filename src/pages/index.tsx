@@ -28,7 +28,7 @@ const Home: NextPage<HomeProps> = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainLayout>
-        <div className="bg-green-500">hey</div>
+        <div className="h-screen">hey</div>
       </MainLayout>
     </>
   );

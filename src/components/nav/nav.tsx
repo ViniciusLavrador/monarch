@@ -2,7 +2,7 @@ import { Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/solid";
 import { useClickOutside, useHotkeys } from "@mantine/hooks";
 import Image from "next/image";
-import { useState } from "react";
+import { LegacyRef, useState } from "react";
 
 const MenuButton: React.FC<{
   onClick: () => void;
@@ -54,35 +54,46 @@ const BaseNavigationTransition: FCWithChildren<TransitionProps> = ({ children, .
   </Transition>
 );
 
-const Nav: FCWithChildren = ({ children }) => {
+const FullNav: React.FC<{
+  showNavbar: boolean;
+  drawerRef: LegacyRef<HTMLDivElement>;
+  onDrawerClose: () => void;
+  onDrawerOpen: () => void;
+}> = ({ showNavbar, drawerRef, onDrawerClose, onDrawerOpen }) => (
+  <div className="container mx-auto flex flex-row items-center justify-between w-full gap-5 py-10 px-5 md:px-0">
+    <Logo />
+    <BaseNavigationTransition
+      show={showNavbar}
+      className="fixed top-0 z-40 flex items-center h-screen w-full right-0 md:right-10 md:w-80"
+    >
+      <div
+        className="h-full md:h-[90%] bg-valhalla-400 shadow-lg rounded-xl p-4 overflow-y-auto w-full"
+        ref={drawerRef}
+      >
+        <div className="flex flex-row justify-end">
+          <CloseButton onClick={onDrawerClose} />
+        </div>
+      </div>
+    </BaseNavigationTransition>
+    <BaseNavigationTransition show={!showNavbar}>
+      <MenuButton onClick={onDrawerOpen} />
+    </BaseNavigationTransition>
+  </div>
+);
+
+const Nav: React.FC = ({}) => {
   const [showNavbar, setShowNavbar] = useState(false);
-  const ref = useClickOutside(() => setShowNavbar(false));
+  const drawerRef = useClickOutside(() => setShowNavbar(false));
 
   useHotkeys([["Escape", () => showNavbar && setShowNavbar(false)]]);
 
   return (
-    <>
-      <div className="container mx-auto flex flex-row items-center justify-between w-full gap-5 py-10 px-5 md:px-0">
-        <Logo />
-        <BaseNavigationTransition
-          appear={true}
-          show={showNavbar}
-          className="fixed top-0 z-40 flex items-center h-screen w-full right-0 md:right-10 md:w-80"
-        >
-          <div
-            className="h-full md:h-[90%] bg-valhalla-400 shadow-lg rounded-xl p-4 overflow-y-auto w-full"
-            ref={ref}
-          >
-            <div className="flex flex-row justify-end">
-              <CloseButton onClick={() => setShowNavbar(!showNavbar)} />
-            </div>
-          </div>
-        </BaseNavigationTransition>
-        <BaseNavigationTransition appear={true} show={!showNavbar}>
-          <MenuButton onClick={() => setShowNavbar(!showNavbar)} />
-        </BaseNavigationTransition>
-      </div>
-    </>
+    <FullNav
+      drawerRef={drawerRef}
+      onDrawerClose={() => setShowNavbar(false)}
+      onDrawerOpen={() => setShowNavbar(true)}
+      showNavbar={showNavbar}
+    />
   );
 };
 
