@@ -123,22 +123,13 @@ const Nav: React.FC = () => {
 
   return (
     <>
-      <Transition
-        show={isOnTop}
-        enter="transition-all duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="duration-300"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <FullNav
-          drawerRef={drawerRef}
-          onDrawerClose={() => setShowNavbar(false)}
-          onDrawerOpen={() => setShowNavbar(true)}
-          showNavbar={showNavbar}
-        />
-      </Transition>
+      <FullNav
+        drawerRef={drawerRef}
+        onDrawerClose={() => setShowNavbar(false)}
+        onDrawerOpen={() => setShowNavbar(true)}
+        showNavbar={showNavbar}
+      />
+
       <Transition
         show={!isOnTop}
         enter="transition-all duration-300"
