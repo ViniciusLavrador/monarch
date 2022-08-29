@@ -1,9 +1,12 @@
 import { Transition } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/solid";
+import { HomeIcon, LogoutIcon, MenuIcon, XIcon } from "@heroicons/react/solid";
 import { useClickOutside, useHotkeys, useWindowScroll } from "@mantine/hooks";
+import classNames from "classnames";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
-import { config } from "node-config-ts";
+import { useRouter } from "next/router";
 import { LegacyRef, useState } from "react";
+import Button from "../button/button";
 
 const SIMPLE_NAV_TRIGGER_POS = 150;
 
@@ -57,52 +60,68 @@ const BaseNavigationTransition: FCWithChildren<TransitionProps> = ({ children, .
   </Transition>
 );
 
-const FullNav: React.FC<{
+type BaseNavProps = {
   showNavbar: boolean;
   drawerRef: LegacyRef<HTMLDivElement>;
   onDrawerClose: () => void;
   onDrawerOpen: () => void;
-}> = ({ showNavbar, drawerRef, onDrawerClose, onDrawerOpen }) => (
-  <div className="container mx-auto flex flex-row items-center justify-between w-full gap-5 py-10 px-5 md:px-0">
-    <Logo />
-    <BaseNavigationTransition
-      show={showNavbar}
-      className="fixed top-0 z-40 flex items-center h-screen w-full right-0 md:right-10 md:w-80"
-    >
-      <div
-        className="h-full md:h-[90%] bg-valhalla-400 shadow-lg rounded-xl p-4 overflow-y-auto w-full"
-        ref={drawerRef}
-      >
-        <div className="flex flex-row justify-end">
-          <CloseButton onClick={onDrawerClose} />
-        </div>
-      </div>
-    </BaseNavigationTransition>
-    <BaseNavigationTransition show={!showNavbar}>
-      <MenuButton onClick={onDrawerOpen} />
-    </BaseNavigationTransition>
-  </div>
-);
+  containerClassName?: string;
+};
 
-const SimpleNav: React.FC<{
-  showNavbar: boolean;
-  drawerRef: LegacyRef<HTMLDivElement>;
-  onDrawerClose: () => void;
-  onDrawerOpen: () => void;
-}> = ({ showNavbar, drawerRef, onDrawerClose, onDrawerOpen }) => (
-  <div className="bg-valhalla-700 fixed top-0 w-full">
-    <div className="container mx-auto flex flex-row items-center justify-between w-full gap-5 py-2 px-5 md:px-0">
+const BaseNav: React.FC<BaseNavProps> = ({
+  showNavbar,
+  drawerRef,
+  onDrawerClose,
+  onDrawerOpen,
+  containerClassName,
+}) => {
+  const { push, pathname } = useRouter();
+
+  return (
+    <div
+      className={classNames([
+        "container mx-auto flex flex-row items-center justify-between w-full gap-5 py-10 px-5 md:px-0",
+        containerClassName,
+      ])}
+    >
       <Logo />
       <BaseNavigationTransition
         show={showNavbar}
-        className="fixed top-0 z-40 flex items-center h-screen w-full right-0 md:right-10 md:w-80"
+        className="fixed top-0 z-40 flex items-center h-screen w-full right-0 md:right-10 md:w-80 "
       >
         <div
-          className="h-full md:h-[90%] bg-valhalla-400 shadow-lg rounded-xl p-4 overflow-y-auto w-full"
+          className="h-full md:h-[90%] bg-valhalla-400 shadow-lg rounded-xl p-4 overflow-y-auto w-full flex flex-col"
           ref={drawerRef}
         >
           <div className="flex flex-row justify-end">
             <CloseButton onClick={onDrawerClose} />
+          </div>
+
+          {/* Regular Itens */}
+          <div className="flex flex-col gap-y-4 pt-8">
+            <Button
+              // disabled
+              // variant={pathname === "/" ? "highlight" : "primary"}
+              variant="muted"
+              className="flex flex-row justify-between"
+              onClick={() => push("/")}
+              disableShadows
+            >
+              Início <HomeIcon className="h-6 w-6" />
+            </Button>
+          </div>
+
+          <div className="grow"></div>
+
+          {/* Bottom Itens */}
+          <div className="flex flex-col gap-y-10 pt-4 ">
+            <Button
+              variant="tertiary"
+              className="flex flex-row justify-between"
+              onClick={() => signOut()}
+            >
+              Sair <LogoutIcon className="h-6 w-6" />
+            </Button>
           </div>
         </div>
       </BaseNavigationTransition>
@@ -110,6 +129,12 @@ const SimpleNav: React.FC<{
         <MenuButton onClick={onDrawerOpen} />
       </BaseNavigationTransition>
     </div>
+  );
+};
+
+const FixedNav: React.FC<Omit<BaseNavProps, "containerClassName">> = (props) => (
+  <div className="bg-valhalla-700 fixed top-0 w-full">
+    <BaseNav containerClassName="py-2" {...props} />
   </div>
 );
 
@@ -123,7 +148,7 @@ const Nav: React.FC = () => {
 
   return (
     <>
-      <FullNav
+      <BaseNav
         drawerRef={drawerRef}
         onDrawerClose={() => setShowNavbar(false)}
         onDrawerOpen={() => setShowNavbar(true)}
@@ -139,7 +164,7 @@ const Nav: React.FC = () => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <SimpleNav
+        <FixedNav
           drawerRef={drawerRef}
           onDrawerClose={() => setShowNavbar(false)}
           onDrawerOpen={() => setShowNavbar(true)}

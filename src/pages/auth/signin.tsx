@@ -4,6 +4,7 @@ import { getProviders, signIn } from "next-auth/react";
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { unstable_getServerSession as getServerSession } from "next-auth";
 import Image from "next/image";
+import Button from "../../components/button/button";
 
 interface SignInPageProps {
   providers: Awaited<ReturnType<typeof getProviders>>;
@@ -38,19 +39,18 @@ const SignInPage: NextPage<SignInPageProps> = ({ providers }) => {
 
           <div className="py-8" />
           {Object.values(providers || {}).map((provider) => (
-            <button
+            <Button
+              variant="highlight"
               key={provider.name}
               onClick={() => signIn(provider.id)}
-              className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white transition-colors ease-in-out bg-yellow-500 border border-transparent rounded-md  group hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-300"
+              className="flex justify-between group"
             >
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                <LockClosedIcon
-                  className="w-5 h-5 text-yellow-200 transition-colors ease-in-out group-hover:text-yellow-300"
-                  aria-hidden="true"
-                />
-              </span>
               Entrar com {provider.name}
-            </button>
+              <LockClosedIcon
+                className="w-5 h-5 text-yellow-200 transition-colors ease-in-out group-hover:text-yellow-300"
+                aria-hidden="true"
+              />
+            </Button>
           ))}
         </div>
       </div>

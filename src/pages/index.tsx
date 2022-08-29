@@ -3,6 +3,7 @@ import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 
 import Head from "next/head";
+import Button from "../components/button/button";
 import Nav from "../components/nav/nav";
 import MainLayout from "../layouts/main.layout";
 import { getServerSidePropsWithSession } from "../utils/auth";
@@ -28,7 +29,9 @@ const Home: NextPage<HomeProps> = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainLayout>
-        <div className="h-screen">hey</div>
+        <div className="h-screen">
+          <div className="flex flex-row gap-10"></div>
+        </div>
         <div className="h-screen">hey</div>
       </MainLayout>
     </>
