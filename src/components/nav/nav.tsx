@@ -1,8 +1,11 @@
 import { Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/solid";
-import { useClickOutside, useHotkeys } from "@mantine/hooks";
+import { useClickOutside, useHotkeys, useWindowScroll } from "@mantine/hooks";
 import Image from "next/image";
+import { config } from "node-config-ts";
 import { LegacyRef, useState } from "react";
+
+const SIMPLE_NAV_TRIGGER_POS = 150;
 
 const MenuButton: React.FC<{
   onClick: () => void;
@@ -81,19 +84,78 @@ const FullNav: React.FC<{
   </div>
 );
 
-const Nav: React.FC = ({}) => {
+const SimpleNav: React.FC<{
+  showNavbar: boolean;
+  drawerRef: LegacyRef<HTMLDivElement>;
+  onDrawerClose: () => void;
+  onDrawerOpen: () => void;
+}> = ({ showNavbar, drawerRef, onDrawerClose, onDrawerOpen }) => (
+  <div className="bg-valhalla-700 fixed top-0 w-full">
+    <div className="container mx-auto flex flex-row items-center justify-between w-full gap-5 py-2 px-5 md:px-0">
+      <Logo />
+      <BaseNavigationTransition
+        show={showNavbar}
+        className="fixed top-0 z-40 flex items-center h-screen w-full right-0 md:right-10 md:w-80"
+      >
+        <div
+          className="h-full md:h-[90%] bg-valhalla-400 shadow-lg rounded-xl p-4 overflow-y-auto w-full"
+          ref={drawerRef}
+        >
+          <div className="flex flex-row justify-end">
+            <CloseButton onClick={onDrawerClose} />
+          </div>
+        </div>
+      </BaseNavigationTransition>
+      <BaseNavigationTransition show={!showNavbar}>
+        <MenuButton onClick={onDrawerOpen} />
+      </BaseNavigationTransition>
+    </div>
+  </div>
+);
+
+const Nav: React.FC = () => {
   const [showNavbar, setShowNavbar] = useState(false);
   const drawerRef = useClickOutside(() => setShowNavbar(false));
-
+  const [scroll] = useWindowScroll();
   useHotkeys([["Escape", () => showNavbar && setShowNavbar(false)]]);
 
+  const isOnTop = scroll.y <= SIMPLE_NAV_TRIGGER_POS;
+
   return (
-    <FullNav
-      drawerRef={drawerRef}
-      onDrawerClose={() => setShowNavbar(false)}
-      onDrawerOpen={() => setShowNavbar(true)}
-      showNavbar={showNavbar}
-    />
+    <>
+      <Transition
+        show={isOnTop}
+        enter="transition-all duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="duration-300"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <FullNav
+          drawerRef={drawerRef}
+          onDrawerClose={() => setShowNavbar(false)}
+          onDrawerOpen={() => setShowNavbar(true)}
+          showNavbar={showNavbar}
+        />
+      </Transition>
+      <Transition
+        show={!isOnTop}
+        enter="transition-all duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-all duration-300"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <SimpleNav
+          drawerRef={drawerRef}
+          onDrawerClose={() => setShowNavbar(false)}
+          onDrawerOpen={() => setShowNavbar(true)}
+          showNavbar={showNavbar}
+        />
+      </Transition>
+    </>
   );
 };
 

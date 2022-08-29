@@ -29,6 +29,7 @@ const Home: NextPage<HomeProps> = (props) => {
       </Head>
       <MainLayout>
         <div className="h-screen">hey</div>
+        <div className="h-screen">hey</div>
       </MainLayout>
     </>
   );

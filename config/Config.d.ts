@@ -2,14 +2,21 @@
 /* eslint-disable */
 declare module "node-config-ts" {
   interface IConfig {
-    db: Db;
+    db: Db
+    client: Client
+  }
+  interface Client {
+    features: Features
+  }
+  interface Features {
+    simple_navigation_enabled: boolean
   }
   interface Db {
-    softDelete: SoftDelete;
+    softDelete: SoftDelete
   }
   interface SoftDelete {
-    models: string[];
+    models: string[]
   }
-  export const config: Config;
-  export type Config = IConfig;
+  export const config: Config
+  export type Config = IConfig
 }
