@@ -1,21 +1,38 @@
 // src/pages/_app.tsx
+import "../styles/globals.css";
 import { withTRPC } from "@trpc/next";
-import type { AppRouter } from "../server/router";
-import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import { SessionProvider } from "next-auth/react";
-import "../styles/globals.css";
-import LoadingIndicator from "../components/loading-indicator/loading-indicator";
 
+import LoadingIndicator from "../components/loading-indicator/loading-indicator";
 import useLoading from "../hooks/use-loading/use-loading";
 
-const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => {
+import * as layouts from "../layouts";
+
+import type { AppType } from "next/dist/shared/lib/utils";
+import type { AppRouter } from "../server/router";
+import { AppProps } from "next/app";
+import React, { JSXElementConstructor } from "react";
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+const BaseLayout: FCWithChildren = ({ children }) => <>{children}</>;
+
+const MyApp = ({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLayout) => {
   const [loading] = useLoading();
+
+  const Layout = Component.layout ? layouts[Component.layout] : BaseLayout;
 
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
-      <LoadingIndicator show={loading} />
+      <Layout>
+        <>
+          <Component {...pageProps} />
+          <LoadingIndicator show={loading} />
+        </>
+      </Layout>
     </SessionProvider>
   );
 };

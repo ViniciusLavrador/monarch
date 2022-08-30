@@ -1,5 +1,5 @@
 import { Transition } from "@headlessui/react";
-import { HomeIcon, LogoutIcon, MenuIcon, XIcon } from "@heroicons/react/solid";
+import { AdjustmentsIcon, HomeIcon, LogoutIcon, MenuIcon, XIcon } from "@heroicons/react/solid";
 import { useClickOutside, useHotkeys, useWindowScroll } from "@mantine/hooks";
 import classNames from "classnames";
 import { signOut } from "next-auth/react";
@@ -100,14 +100,20 @@ const BaseNav: React.FC<BaseNavProps> = ({
           {/* Regular Itens */}
           <div className="flex flex-col gap-y-4 pt-8">
             <Button
-              // disabled
-              // variant={pathname === "/" ? "highlight" : "primary"}
-              variant="muted"
+              variant={pathname === "/" ? "highlight" : "primary"}
               className="flex flex-row justify-between"
               onClick={() => push("/")}
               disableShadows
             >
               Início <HomeIcon className="h-6 w-6" />
+            </Button>
+            <Button
+              variant={pathname === "/preferences" ? "highlight" : "primary"}
+              className="flex flex-row justify-between"
+              onClick={() => push("/preferences")}
+              disableShadows
+            >
+              Preferencias <AdjustmentsIcon className="h-6 w-6" />
             </Button>
           </div>
 
