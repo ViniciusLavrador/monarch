@@ -2,9 +2,9 @@ import Nav from "../components/nav/nav";
 
 const MainLayout: FCWithChildren = ({ children }) => {
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen flex flex-col">
       <Nav />
-      <main className="container mx-auto place-content-center px-5 sm:px-0">{children}</main>
+      <main className="container mx-auto grow pb-10">{children}</main>
     </div>
   );
 };
