@@ -18,15 +18,17 @@ const DynamicPane: React.FC<{ pane: PreferencePaneKeys }> = ({ pane }) => {
 const PreferencesPage: NextPageWithLayout = () => {
   const [pane, setPane] = useState<PreferencePaneKeys | null>();
 
+  const isSomePaneActive = (panes: PreferencePaneKeys[]) => (pane ? panes.includes(pane) : false);
+
   const preferencesNavigator: Navigator.Navigator[] = [
     {
       key: "preferences",
       component: "Preferências Gerais",
       buttonProps: {
-        className: applyActiveClassnameToContainer(["PropertyPane"].includes(pane || "")),
+        className: applyActiveClassnameToContainer(isSomePaneActive(["PropertyPane"])),
       },
       panelProps: {
-        className: applyActiveClassnameToContainer(["PropertyPane"].includes(pane || ""), true),
+        className: applyActiveClassnameToContainer(isSomePaneActive(["PropertyPane"]), true),
       },
       navigator: [
         {
@@ -36,7 +38,7 @@ const PreferencesPage: NextPageWithLayout = () => {
             onClick: () => {
               setPane("PropertyPane");
             },
-            className: applyActiveClassnameToContainer(["PropertyPane"].includes(pane || "")),
+            className: applyActiveClassnameToContainer(isSomePaneActive(["PropertyPane"])),
           },
         },
       ],
@@ -49,7 +51,7 @@ const PreferencesPage: NextPageWithLayout = () => {
         <Menu nav={preferencesNavigator} />
       </div>
       {pane && (
-        <div className="w-5/6 bg-valhalla-200 bg-opacity-30 h-96 rounded-lg p-5 text-white">
+        <div className="w-5/6 bg-valhalla-200 bg-opacity-30 rounded-lg p-5 text-white">
           <DynamicPane pane={pane} />
         </div>
       )}

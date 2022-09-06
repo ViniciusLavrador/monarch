@@ -147,7 +147,7 @@ const BaseNav: React.FC<BaseNavProps> = ({
 };
 
 const FixedNav: React.FC<Omit<BaseNavProps, "containerClassName">> = (props) => (
-  <div className="bg-valhalla-700 fixed top-0 w-full">
+  <div className="bg-valhalla-700 fixed top-0 w-full z-50">
     <BaseNav containerClassName="py-2" {...props} />
   </div>
 );

@@ -51,7 +51,7 @@ const Button: FCWithChildren<ButtonProps> = ({
   return (
     <button
       className={classNames([
-        "rounded-lg p-3",
+        "rounded-lg p-3 text-sm",
         "transition-all",
         "focus:outline-none focus:ring-2 focus:ring-offset-2",
         { "shadow-lg": !disableShadows },
