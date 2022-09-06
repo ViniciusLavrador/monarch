@@ -1,50 +1,22 @@
 import { Transition } from "@headlessui/react";
-import { AdjustmentsIcon, HomeIcon, LogoutIcon, MenuIcon, XIcon } from "@heroicons/react/solid";
+import { AdjustmentsIcon, HomeIcon, LogoutIcon, PlusIcon } from "@heroicons/react/solid";
 import { useClickOutside, useHotkeys, useWindowScroll } from "@mantine/hooks";
 import classNames from "classnames";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { LegacyRef, useState } from "react";
-import Button from "../button/button";
+import { useState } from "react";
+import Menu from "../menu/menu";
+import { CloseButton, MenuButton, NavButtonContainer } from "./nav-buttons";
+import { BaseNavProps, TransitionProps } from "./types";
 
 const SIMPLE_NAV_TRIGGER_POS = 150;
-
-const MenuButton: React.FC<{
-  onClick: () => void;
-}> = ({ onClick }) => (
-  <button
-    type="button"
-    className="flex w-10 h-10 text-yellow-500 transition-colors rounded-lg cursor-pointer bg-valhalla-50 place-content-center hover:bg-yellow-500 hover:text-valhalla-50"
-    onClick={onClick}
-  >
-    <MenuIcon className="w-6 h-6 m-auto" />
-  </button>
-);
-
-const CloseButton: React.FC<{
-  onClick: () => void;
-}> = ({ onClick }) => (
-  <button
-    type="button"
-    className="text-valhalla-50 transition-colors cursor-pointer place-content-center hover:text-yellow-500"
-    onClick={onClick}
-  >
-    <XIcon className="w-6 h-6 m-auto" />
-  </button>
-);
 
 const Logo: React.FC = () => (
   <div className="relative w-20 h-20">
     <Image src="/monarch-logo.svg" layout="fill" alt="Monarch logo" />
   </div>
 );
-
-type TransitionProps = {
-  show?: boolean;
-  className?: string;
-  appear?: boolean;
-};
 
 const BaseNavigationTransition: FCWithChildren<TransitionProps> = ({ children, ...props }) => (
   <Transition
@@ -60,14 +32,6 @@ const BaseNavigationTransition: FCWithChildren<TransitionProps> = ({ children, .
   </Transition>
 );
 
-type BaseNavProps = {
-  showNavbar: boolean;
-  drawerRef: LegacyRef<HTMLDivElement>;
-  onDrawerClose: () => void;
-  onDrawerOpen: () => void;
-  containerClassName?: string;
-};
-
 const BaseNav: React.FC<BaseNavProps> = ({
   showNavbar,
   drawerRef,
@@ -77,10 +41,17 @@ const BaseNav: React.FC<BaseNavProps> = ({
 }) => {
   const { push, pathname } = useRouter();
 
+  const applyActivePathClassnameToContainer = (path: string[], panel?: boolean) =>
+    classNames([
+      "transition-colors",
+      { "!bg-yellow-500 hover:bg-yellow-500": path.includes(pathname) },
+      { "!bg-opacity-30": path.includes(pathname) && panel },
+    ]);
+
   return (
     <div
       className={classNames([
-        "container mx-auto flex flex-row items-center justify-between w-full gap-5 py-10 px-5 md:px-0",
+        "container mx-auto flex flex-row items-center justify-between w-full gap-5 py-5 px-5 md:px-0",
         containerClassName,
       ])}
     >
@@ -98,37 +69,74 @@ const BaseNav: React.FC<BaseNavProps> = ({
           </div>
 
           {/* Regular Itens */}
-          <div className="flex flex-col gap-y-4 pt-8">
-            <Button
-              variant={pathname === "/" ? "highlight" : "primary"}
-              className="flex flex-row justify-between"
-              onClick={() => push("/")}
-              disableShadows
-            >
-              Início <HomeIcon className="h-6 w-6" />
-            </Button>
-            <Button
-              variant={pathname === "/preferences" ? "highlight" : "primary"}
-              className="flex flex-row justify-between"
-              onClick={() => push("/preferences")}
-              disableShadows
-            >
-              Preferencias <AdjustmentsIcon className="h-6 w-6" />
-            </Button>
-          </div>
+          <Menu
+            containerProps={{
+              className: "pt-8",
+            }}
+            nav={[
+              {
+                key: "home-btn",
+                component: (
+                  <NavButtonContainer className="group">
+                    <HomeIcon className="h-6 w-6 group-hover:animate-pulse" /> Início
+                  </NavButtonContainer>
+                ),
+                buttonProps: {
+                  onClick: () => push("/"),
+                  className: applyActivePathClassnameToContainer(["/"]),
+                },
+              },
+              {
+                key: "pref-btn",
+                component: (
+                  <NavButtonContainer className="group">
+                    <PlusIcon className="h-6 w-6 group-hover:animate-pulse" /> Mais
+                  </NavButtonContainer>
+                ),
+                buttonProps: {
+                  className: applyActivePathClassnameToContainer(["/preferences", "/test"]),
+                },
+                panelProps: {
+                  className: applyActivePathClassnameToContainer(["/preferences", "/test"], true),
+                },
+                navigator: [
+                  {
+                    key: "/preferences",
+                    component: (
+                      <NavButtonContainer className="group">
+                        <AdjustmentsIcon className="h-6 w-6 group-hover:animate-pulse" />{" "}
+                        Preferencias
+                      </NavButtonContainer>
+                    ),
+                    buttonProps: {
+                      onClick: () => push("/preferences"),
+                      className: applyActivePathClassnameToContainer(["/preferences"]),
+                    },
+                  },
+                ],
+              },
+            ]}
+          />
 
           <div className="grow"></div>
 
           {/* Bottom Itens */}
-          <div className="flex flex-col gap-y-10 pt-4 ">
-            <Button
-              variant="tertiary"
-              className="flex flex-row justify-between"
-              onClick={() => signOut()}
-            >
-              Sair <LogoutIcon className="h-6 w-6" />
-            </Button>
-          </div>
+          <Menu
+            containerProps={{
+              className: "pt-4",
+            }}
+            nav={[
+              {
+                key: "logout-btn",
+                component: (
+                  <NavButtonContainer>
+                    Sair <LogoutIcon className="h-6 w-6" />
+                  </NavButtonContainer>
+                ),
+                buttonProps: { onClick: () => signOut() },
+              },
+            ]}
+          />
         </div>
       </BaseNavigationTransition>
       <BaseNavigationTransition show={!showNavbar}>

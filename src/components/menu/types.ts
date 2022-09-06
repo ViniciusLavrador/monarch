@@ -1,20 +1,23 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
+import React, { ButtonHTMLAttributes, DetailedHTMLProps, HTMLAttributes } from "react";
 
 namespace Navigator {
   export type Branch = {
-    title: string;
-    banchNavigator: Navigator[];
+    key: string;
+    component: React.ReactNode;
+    navigator: Navigator[];
     buttonProps?: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
+    panelProps?: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
   };
   export type Button = {
-    title: string;
+    key: string;
+    component: React.ReactNode;
     buttonProps: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
   };
 
   export type Navigator = Button | Branch;
 
   export function isNavButton(nav: Navigator): nav is Button {
-    return typeof (nav as Branch).banchNavigator === "undefined";
+    return typeof (nav as Branch).navigator === "undefined";
   }
 }
 

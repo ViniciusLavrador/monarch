@@ -3,13 +3,6 @@
 declare module "node-config-ts" {
   interface IConfig {
     db: Db
-    client: Client
-  }
-  interface Client {
-    features: Features
-  }
-  interface Features {
-    simple_navigation_enabled: boolean
   }
   interface Db {
     softDelete: SoftDelete
