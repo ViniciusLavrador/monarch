@@ -6,8 +6,8 @@ import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Menu from "../menu/menu";
-import { CloseButton, MenuButton, NavButtonContainer } from "./nav-buttons";
+import Menu, { applyActiveClassnameToContainer, MenuButtonContainer } from "../menu/menu";
+import { CloseButton, MenuButton } from "./nav-buttons";
 import { BaseNavProps, TransitionProps } from "./types";
 
 const SIMPLE_NAV_TRIGGER_POS = 150;
@@ -41,13 +41,6 @@ const BaseNav: React.FC<BaseNavProps> = ({
 }) => {
   const { push, pathname } = useRouter();
 
-  const applyActivePathClassnameToContainer = (path: string[], panel?: boolean) =>
-    classNames([
-      "transition-colors",
-      { "!bg-yellow-500 hover:bg-yellow-500": path.includes(pathname) },
-      { "!bg-opacity-30": path.includes(pathname) && panel },
-    ]);
-
   return (
     <div
       className={classNames([
@@ -77,40 +70,47 @@ const BaseNav: React.FC<BaseNavProps> = ({
               {
                 key: "home-btn",
                 component: (
-                  <NavButtonContainer className="group">
+                  <MenuButtonContainer>
                     <HomeIcon className="h-6 w-6 group-hover:animate-pulse" /> Início
-                  </NavButtonContainer>
+                  </MenuButtonContainer>
                 ),
                 buttonProps: {
                   onClick: () => push("/"),
-                  className: applyActivePathClassnameToContainer(["/"]),
+                  className: applyActiveClassnameToContainer(["/"].includes(pathname)),
                 },
               },
               {
                 key: "pref-btn",
                 component: (
-                  <NavButtonContainer className="group">
+                  <MenuButtonContainer>
                     <PlusIcon className="h-6 w-6 group-hover:animate-pulse" /> Mais
-                  </NavButtonContainer>
+                  </MenuButtonContainer>
                 ),
                 buttonProps: {
-                  className: applyActivePathClassnameToContainer(["/preferences", "/test"]),
+                  className: applyActiveClassnameToContainer(
+                    ["/preferences", "/test"].includes(pathname),
+                  ),
                 },
                 panelProps: {
-                  className: applyActivePathClassnameToContainer(["/preferences", "/test"], true),
+                  className: applyActiveClassnameToContainer(
+                    ["/preferences", "/test"].includes(pathname),
+                    true,
+                  ),
                 },
                 navigator: [
                   {
                     key: "/preferences",
                     component: (
-                      <NavButtonContainer className="group">
+                      <MenuButtonContainer>
                         <AdjustmentsIcon className="h-6 w-6 group-hover:animate-pulse" />{" "}
                         Preferencias
-                      </NavButtonContainer>
+                      </MenuButtonContainer>
                     ),
                     buttonProps: {
                       onClick: () => push("/preferences"),
-                      className: applyActivePathClassnameToContainer(["/preferences"]),
+                      className: applyActiveClassnameToContainer(
+                        ["/preferences"].includes(pathname),
+                      ),
                     },
                   },
                 ],
@@ -129,9 +129,9 @@ const BaseNav: React.FC<BaseNavProps> = ({
               {
                 key: "logout-btn",
                 component: (
-                  <NavButtonContainer>
+                  <MenuButtonContainer>
                     Sair <LogoutIcon className="h-6 w-6" />
-                  </NavButtonContainer>
+                  </MenuButtonContainer>
                 ),
                 buttonProps: { onClick: () => signOut() },
               },

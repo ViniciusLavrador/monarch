@@ -1,37 +1,42 @@
-import dynamic from "next/dynamic";
 import React, { useState } from "react";
-import Menu from "../../components/menu/menu";
+import Menu, {
+  applyActiveClassnameToContainer,
+  MenuButtonContainer,
+} from "../../components/menu/menu";
 import Navigator from "../../components/menu/types";
+import * as PreferencePanes from "../../components/preference-panes";
 
-enum PREFERENCES_PAGE_PANES {
-  DEFAULT,
-  PROPERTY,
-}
+type PreferencePaneKeys = keyof typeof PreferencePanes;
 
-const paneComponents: Record<PREFERENCES_PAGE_PANES, any> = {
-  [PREFERENCES_PAGE_PANES.DEFAULT]: () => <></>,
-  [PREFERENCES_PAGE_PANES.PROPERTY]: dynamic(() => import("./panes/property-pane"), {
-    suspense: true,
-  }),
+const DynamicPane: React.FC<{ pane: PreferencePaneKeys }> = ({ pane }) => {
+  switch (pane) {
+    case "PropertyPane":
+      return <PreferencePanes.PropertyPane />;
+  }
 };
 
-const DynamicPane = ({ pane }: { pane: PREFERENCES_PAGE_PANES }) => paneComponents[pane];
-
-const PreferencesPage: NextPageWithLayout = (props) => {
-  const [pane, setPane] = useState(PREFERENCES_PAGE_PANES.DEFAULT);
+const PreferencesPage: NextPageWithLayout = () => {
+  const [pane, setPane] = useState<PreferencePaneKeys | null>();
 
   const preferencesNavigator: Navigator.Navigator[] = [
     {
       key: "preferences",
       component: "Preferências Gerais",
+      buttonProps: {
+        className: applyActiveClassnameToContainer(["PropertyPane"].includes(pane || "")),
+      },
+      panelProps: {
+        className: applyActiveClassnameToContainer(["PropertyPane"].includes(pane || ""), true),
+      },
       navigator: [
         {
-          key: "properties",
-          component: "Propriedades",
+          key: "properties-preferences",
+          component: <MenuButtonContainer>Preferência de Propriedades</MenuButtonContainer>,
           buttonProps: {
             onClick: () => {
-              setPane(PREFERENCES_PAGE_PANES.PROPERTY);
+              setPane("PropertyPane");
             },
+            className: applyActiveClassnameToContainer(["PropertyPane"].includes(pane || "")),
           },
         },
       ],
@@ -43,11 +48,9 @@ const PreferencesPage: NextPageWithLayout = (props) => {
       <div className="text-white w-1/5">
         <Menu nav={preferencesNavigator} />
       </div>
-      {pane !== PREFERENCES_PAGE_PANES.DEFAULT && (
+      {pane && (
         <div className="w-5/6 bg-valhalla-200 bg-opacity-30 h-96 rounded-lg p-5 text-white">
-          <React.Suspense>
-            <DynamicPane pane={pane} />
-          </React.Suspense>
+          <DynamicPane pane={pane} />
         </div>
       )}
     </div>

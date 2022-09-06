@@ -1,5 +1,4 @@
 import { MenuIcon, XIcon } from "@heroicons/react/solid";
-import classNames from "classnames";
 
 export const MenuButton: React.FC<{
   onClick: () => void;
@@ -24,14 +23,3 @@ export const CloseButton: React.FC<{
     <XIcon className="w-6 h-6 m-auto" />
   </button>
 );
-
-export const NavButtonContainer: FCWithChildren<{ className?: string }> = ({
-  children,
-  className,
-}) => {
-  return (
-    <div className={classNames("flex flex-row justify-start w-full items-center gap-4", className)}>
-      {children}
-    </div>
-  );
-};

@@ -95,4 +95,27 @@ const Menu: React.FC<{
   return <div {...containerProps}>{makeDisclosureList(nav, true)}</div>;
 };
 
+export const MenuButtonContainer: FCWithChildren<{ className?: string }> = ({
+  children,
+  className,
+}) => {
+  return (
+    <div
+      className={classNames(
+        "flex flex-row justify-start w-full items-center gap-4 group",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+};
+
+export const applyActiveClassnameToContainer = (condition: boolean, panel?: boolean) =>
+  classNames([
+    "transition-colors",
+    { "!bg-yellow-500 hover:bg-yellow-500": condition },
+    { "!bg-opacity-30": condition && panel },
+  ]);
+
 export default Menu;
