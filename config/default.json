@@ -6,6 +6,15 @@
         "Property",
         "PropertyAddress"
       ]
+    },
+    "preferences": {
+      "properties": {
+        "type": {
+          "models": [
+            "PropertyType"
+          ]
+        }
+      }
     }
   }
 }
