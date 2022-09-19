@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { useState } from "react";
 import Menu, {
   applyActiveClassnameToContainer,
@@ -46,16 +47,22 @@ const PreferencesPage: NextPageWithLayout = () => {
   ];
 
   return (
-    <div className="flex flex-row gap-4">
-      <div className="text-white w-1/5">
-        <Menu nav={preferencesNavigator} />
-      </div>
-      {pane && (
-        <div className="w-5/6 bg-valhalla-200 bg-opacity-30 rounded-lg p-5 text-white">
-          <DynamicPane pane={pane} />
+    <>
+      <Head>
+        <title>Monarch | Preferências de Propriedades</title>
+      </Head>
+
+      <div className="flex flex-row gap-4">
+        <div className="text-white w-1/5">
+          <Menu nav={preferencesNavigator} />
         </div>
-      )}
-    </div>
+        {pane && (
+          <div className="w-5/6 bg-valhalla-200 bg-opacity-30 rounded-lg p-5 text-white">
+            <DynamicPane pane={pane} />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
