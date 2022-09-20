@@ -1,12 +1,9 @@
 import { XIcon } from "@heroicons/react/solid";
 import { useForm, zodResolver } from "@mantine/form";
-import { FormEventHandler } from "react";
 import { z } from "zod";
-import useLoading from "../../../../../../hooks/use-loading/use-loading";
 import { trpc } from "../../../../../../utils/trpc";
 import Button from "../../../../../button/button";
 import Input from "../../../../../input/input";
-import Tag from "../../../../../Tag/Tag";
 
 const validationSchema = z.object({
   propertyType: z

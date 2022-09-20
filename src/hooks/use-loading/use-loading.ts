@@ -1,12 +1,25 @@
 import { useAtom } from "jotai";
 import loadingAtom from "../../jotai/atoms/loading";
 
-const useLoading = () => {
+const useLoading = (key?: string) => {
   const [isLoading, setIsLoading] = useAtom(loadingAtom);
 
-  const toggleLoading = () => setIsLoading(!isLoading);
+  const toggleLoadingForKey = () => {
+    if (!key) throw new Error("[useLoading] TOGGLE requires a key");
+    return setIsLoading({ loadingKey: key, action: "TOGGLE" });
+  };
 
-  return [isLoading, toggleLoading] as const;
+  const addLoadingForKey = () => {
+    if (!key) throw new Error("[useLoading] ADD requires a key");
+    return setIsLoading({ loadingKey: key, action: "ADD" });
+  };
+
+  const removeLoadingForKey = () => {
+    if (!key) throw new Error("[useLoading] REMOVE requires a key");
+    return setIsLoading({ loadingKey: key, action: "REMOVE" });
+  };
+
+  return [isLoading, { addLoadingForKey, removeLoadingForKey, toggleLoadingForKey }] as const;
 };
 
 export default useLoading;
