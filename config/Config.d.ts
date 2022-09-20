@@ -6,6 +6,13 @@ declare module "node-config-ts" {
   }
   interface Db {
     softDelete: SoftDelete
+    preferences: Preferences
+  }
+  interface Preferences {
+    properties: Properties
+  }
+  interface Properties {
+    type: SoftDelete
   }
   interface SoftDelete {
     models: string[]

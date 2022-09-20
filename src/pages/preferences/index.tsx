@@ -56,11 +56,7 @@ const PreferencesPage: NextPageWithLayout = () => {
         <div className="text-white w-1/5">
           <Menu nav={preferencesNavigator} />
         </div>
-        {pane && (
-          <div className="w-5/6 bg-valhalla-200 bg-opacity-30 rounded-lg p-5 text-white">
-            <DynamicPane pane={pane} />
-          </div>
-        )}
+        {pane && <DynamicPane pane={pane} />}
       </div>
     </>
   );

@@ -603,6 +603,14 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@mantine/form@^5.4.0":
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/@mantine/form/-/form-5.4.0.tgz#7999406c319c5a4cdb80b606bdc0a3eae3f0c4dc"
+  integrity sha512-Ur16GkMrEDYUnUeC+mm1OqV6WpukMkFsFmIvJpkM9sKe12tSsY8QryGNxPfw4UVxF8wu7L6vFo5kvNh6zxUTuQ==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    klona "^2.0.5"
+
 "@mantine/hooks@^5.2.3":
   version "5.2.3"
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-5.2.3.tgz#76a57141665ee0fd97c436e44b8f252755a2e502"
@@ -3286,6 +3294,11 @@ kleur@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
+
+klona@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
+  integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
 language-subtag-registry@~0.3.2:
   version "0.3.22"
