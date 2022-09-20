@@ -12,9 +12,9 @@ import { BaseNavProps, TransitionProps } from "./types";
 
 const SIMPLE_NAV_TRIGGER_POS = 150;
 
-const Logo: React.FC = () => (
-  <div className="relative w-20 h-20">
-    <Image src="/monarch-logo.svg" layout="fill" alt="Monarch logo" />
+const Logo: React.FC<{ onClick: () => void }> = ({ onClick }) => (
+  <div className="relative w-20 h-20 cursor-pointer">
+    <Image src="/monarch-logo.svg" layout="fill" alt="Monarch logo" onClick={onClick} />
   </div>
 );
 
@@ -48,7 +48,7 @@ const BaseNav: React.FC<BaseNavProps> = ({
         containerClassName,
       ])}
     >
-      <Logo />
+      <Logo onClick={() => push("/")} />
       <BaseNavigationTransition
         show={showNavbar}
         className="fixed top-0 z-40 flex items-center h-screen w-full right-0 md:right-10 md:w-80 "
