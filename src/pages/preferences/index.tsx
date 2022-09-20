@@ -1,5 +1,6 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import Menu, {
   applyActiveClassnameToContainer,
   MenuButtonContainer,
@@ -8,6 +9,10 @@ import Navigator from "../../components/menu/types";
 import * as PreferencePanes from "../../components/preference-panes";
 
 type PreferencePaneKeys = keyof typeof PreferencePanes;
+
+const isPreferencePaneKey = (pane: string): pane is PreferencePaneKeys => {
+  return Object.keys(PreferencePanes).includes(pane);
+};
 
 const DynamicPane: React.FC<{ pane: PreferencePaneKeys }> = ({ pane }) => {
   switch (pane) {
@@ -18,6 +23,8 @@ const DynamicPane: React.FC<{ pane: PreferencePaneKeys }> = ({ pane }) => {
 
 const PreferencesPage: NextPageWithLayout = () => {
   const [pane, setPane] = useState<PreferencePaneKeys | null>();
+
+  const { push, asPath } = useRouter();
 
   const isSomePaneActive = (panes: PreferencePaneKeys[]) => (pane ? panes.includes(pane) : false);
 
@@ -38,6 +45,7 @@ const PreferencesPage: NextPageWithLayout = () => {
           buttonProps: {
             onClick: () => {
               setPane("PropertyPane");
+              push("#property-pane");
             },
             className: applyActiveClassnameToContainer(isSomePaneActive(["PropertyPane"])),
           },
@@ -45,6 +53,17 @@ const PreferencesPage: NextPageWithLayout = () => {
       ],
     },
   ];
+
+  useEffect(() => {
+    const hash = (asPath.split("#")[1] || "")
+      .split("-")
+      .map((v) => v.charAt(0).toUpperCase() + v.slice(1))
+      .join("");
+
+    if (isPreferencePaneKey(hash)) {
+      setPane("PropertyPane");
+    }
+  }, [asPath]);
 
   return (
     <>

@@ -1,6 +1,7 @@
 import { XIcon } from "@heroicons/react/solid";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
+import useLoading from "../../../../../../hooks/use-loading/use-loading";
 import { trpc } from "../../../../../../utils/trpc";
 import Button from "../../../../../button/button";
 import Input from "../../../../../input/input";
@@ -13,14 +14,14 @@ const validationSchema = z.object({
     .transform((propertyType) => propertyType.toUpperCase()),
 });
 
-export interface PropertiesTypesFormProps {}
-
-const PropertiesTypesForm: React.FC<PropertiesTypesFormProps> = ({}) => {
+const PropertiesTypesForm: React.FC = () => {
+  const [_loading, { toggleLoadingForKey }] = useLoading("preferences.properties.types.create");
   const typesQuery = trpc.useQuery(["preferences.properties.types.getAll"]);
   const createTypeMutation = trpc.useMutation(["preferences.properties.types.create"], {
     onSuccess() {
       typesQuery.refetch();
       reset();
+      toggleLoadingForKey();
     },
   });
 
@@ -32,6 +33,7 @@ const PropertiesTypesForm: React.FC<PropertiesTypesFormProps> = ({}) => {
   });
 
   const handleSubmit = onSubmit((values) => {
+    toggleLoadingForKey();
     createTypeMutation.mutate(values.propertyType);
   });
 
@@ -57,10 +59,10 @@ const PropertiesTypesForm: React.FC<PropertiesTypesFormProps> = ({}) => {
 
       <div className="text-gray-300 text-xs flex flex-wrap gap-1">
         {typesQuery.data
-          ? typesQuery.data.map(({ name, id }, index, arr) => (
+          ? typesQuery.data.map(({ name, id }) => (
               <span
                 key={id}
-                className="rounded p-1 cursor-pointer transition-all duration-300 group bg-valhalla-50 hover:bg-red-500"
+                className="rounded p-1 cursor-pointer transition-all duration-300 group bg-valhalla-50 hover:bg-red-500 "
               >
                 {name}
                 <XIcon className="w-4 h-4 hidden group-hover:inline-block animate-pulse ml-2" />
@@ -70,20 +72,6 @@ const PropertiesTypesForm: React.FC<PropertiesTypesFormProps> = ({}) => {
       </div>
 
       <div className="h-2" />
-
-      {/* <div className="p-2 mb-3 flex flex-wrap rounded-lg border bg-valhalla-50 border-valhalla-600">
-        {typesQuery.data ? (
-          typesQuery.data.map(({ id, name }) => (
-            <Tag key={id} onClose={() => {}}>
-              {name}
-            </Tag>
-          ))
-        ) : (
-          <h1 className="text-sm text-gray-300 font-thin m-4">
-            Nenhum tipo de categoria foi cadastrado.
-          </h1>
-        )}
-      </div> */}
     </form>
   );
 };
