@@ -9,10 +9,9 @@ import useLoading from "../hooks/use-loading/use-loading";
 
 import * as layouts from "../layouts";
 
-import type { AppType } from "next/dist/shared/lib/utils";
 import type { AppRouter } from "../server/router";
 import { AppProps } from "next/app";
-import React, { JSXElementConstructor } from "react";
+import React from "react";
 import Head from "next/head";
 
 type AppPropsWithLayout = AppProps & {
@@ -22,7 +21,7 @@ type AppPropsWithLayout = AppProps & {
 const BaseLayout: FCWithChildren = ({ children }) => <>{children}</>;
 
 const MyApp = ({ Component, pageProps: { session, ...pageProps } }: AppPropsWithLayout) => {
-  const [loading] = useLoading();
+  const { isLoading } = useLoading();
 
   const Layout = Component.layout ? layouts[Component.layout] : BaseLayout;
 
@@ -35,7 +34,7 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }: AppPropsWith
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <Component {...pageProps} />
-          <LoadingIndicator show={loading} />
+          <LoadingIndicator show={isLoading} />
         </>
       </Layout>
     </SessionProvider>

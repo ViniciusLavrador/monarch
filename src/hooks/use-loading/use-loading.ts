@@ -19,7 +19,7 @@ const useLoading = (key?: string) => {
     return setIsLoading({ loadingKey: key, action: "REMOVE" });
   };
 
-  return [isLoading, { addLoadingForKey, removeLoadingForKey, toggleLoadingForKey }] as const;
+  return { addLoadingForKey, removeLoadingForKey, toggleLoadingForKey, isLoading };
 };
 
 export default useLoading;

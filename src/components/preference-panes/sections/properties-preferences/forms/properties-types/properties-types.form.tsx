@@ -1,5 +1,6 @@
 import { XIcon } from "@heroicons/react/solid";
 import { useForm, zodResolver } from "@mantine/form";
+import { useEffect } from "react";
 import { z } from "zod";
 import useLoading from "../../../../../../hooks/use-loading/use-loading";
 import { trpc } from "../../../../../../utils/trpc";
@@ -15,13 +16,26 @@ const validationSchema = z.object({
 });
 
 const PropertiesTypesForm: React.FC = () => {
-  const [_loading, { toggleLoadingForKey }] = useLoading("preferences.properties.types.create");
+  const { toggleLoadingForKey: toggleLoadingForCreate } = useLoading(
+    "preferences.properties.types.create",
+  );
+  const { toggleLoadingForKey: toggleLoadingForRemove } = useLoading(
+    "preferences.properties.types.remove",
+  );
+
   const typesQuery = trpc.useQuery(["preferences.properties.types.getAll"]);
   const createTypeMutation = trpc.useMutation(["preferences.properties.types.create"], {
     onSuccess() {
       typesQuery.refetch();
       reset();
-      toggleLoadingForKey();
+      toggleLoadingForCreate();
+    },
+  });
+
+  const removeTypeMutation = trpc.useMutation(["preferences.properties.types.remove"], {
+    onSuccess() {
+      typesQuery.refetch();
+      toggleLoadingForRemove();
     },
   });
 
@@ -32,8 +46,13 @@ const PropertiesTypesForm: React.FC = () => {
     },
   });
 
+  const handleRemove = (id: number) => {
+    removeTypeMutation.mutate(id);
+    toggleLoadingForRemove();
+  };
+
   const handleSubmit = onSubmit((values) => {
-    toggleLoadingForKey();
+    toggleLoadingForCreate();
     createTypeMutation.mutate(values.propertyType);
   });
 
@@ -58,17 +77,18 @@ const PropertiesTypesForm: React.FC = () => {
       <div className="h-4" />
 
       <div className="text-gray-300 text-xs flex flex-wrap gap-1">
-        {typesQuery.data
+        {typesQuery.data && typesQuery.data.length > 0
           ? typesQuery.data.map(({ name, id }) => (
               <span
                 key={id}
                 className="rounded p-1 cursor-pointer transition-all duration-300 group bg-valhalla-50 hover:bg-red-500 "
+                onClick={() => handleRemove(id)}
               >
                 {name}
                 <XIcon className="w-4 h-4 hidden group-hover:inline-block animate-pulse ml-2" />
               </span>
             ))
-          : "Nenhum tipo de categoria foi cadastrado."}
+          : "Nenhum tipo de categoria foi encontrado."}
       </div>
 
       <div className="h-2" />
