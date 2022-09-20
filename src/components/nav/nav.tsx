@@ -80,40 +80,16 @@ const BaseNav: React.FC<BaseNavProps> = ({
                 },
               },
               {
-                key: "pref-btn",
+                key: "/preferences",
                 component: (
                   <MenuButtonContainer>
-                    <PlusIcon className="h-6 w-6 group-hover:animate-pulse" /> Mais
+                    <AdjustmentsIcon className="h-6 w-6 group-hover:animate-pulse" /> Preferências
                   </MenuButtonContainer>
                 ),
                 buttonProps: {
-                  className: applyActiveClassnameToContainer(
-                    ["/preferences", "/test"].includes(pathname),
-                  ),
+                  onClick: () => push("/preferences"),
+                  className: applyActiveClassnameToContainer(["/preferences"].includes(pathname)),
                 },
-                panelProps: {
-                  className: applyActiveClassnameToContainer(
-                    ["/preferences", "/test"].includes(pathname),
-                    true,
-                  ),
-                },
-                navigator: [
-                  {
-                    key: "/preferences",
-                    component: (
-                      <MenuButtonContainer>
-                        <AdjustmentsIcon className="h-6 w-6 group-hover:animate-pulse" />{" "}
-                        Preferencias
-                      </MenuButtonContainer>
-                    ),
-                    buttonProps: {
-                      onClick: () => push("/preferences"),
-                      className: applyActiveClassnameToContainer(
-                        ["/preferences"].includes(pathname),
-                      ),
-                    },
-                  },
-                ],
               },
             ]}
           />
@@ -130,7 +106,7 @@ const BaseNav: React.FC<BaseNavProps> = ({
                 key: "logout-btn",
                 component: (
                   <MenuButtonContainer>
-                    Sair <LogoutIcon className="h-6 w-6" />
+                    <LogoutIcon className="h-6 w-6" /> Sair
                   </MenuButtonContainer>
                 ),
                 buttonProps: { onClick: () => signOut() },

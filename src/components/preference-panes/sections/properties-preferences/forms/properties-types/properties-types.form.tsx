@@ -71,7 +71,7 @@ const PropertiesTypesForm: React.FC = () => {
         />
 
         <Button className="h-fit" type="submit">
-          Submit
+          Adicionar
         </Button>
       </div>
       <div className="h-4" />
