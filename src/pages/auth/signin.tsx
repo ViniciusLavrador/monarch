@@ -1,7 +1,7 @@
 import { authOptions } from "../api/auth/[...nextauth]";
 import type { GetServerSideProps, NextPage } from "next/types";
 import { getProviders, signIn } from "next-auth/react";
-import { LockClosedIcon } from "@heroicons/react/solid";
+import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { unstable_getServerSession as getServerSession } from "next-auth";
 import Image from "next/image";
 import Button from "../../components/button/button";

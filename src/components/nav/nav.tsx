@@ -1,5 +1,10 @@
 import { Transition } from "@headlessui/react";
-import { AdjustmentsIcon, HomeIcon, LogoutIcon, PlusIcon } from "@heroicons/react/solid";
+import {
+  AdjustmentsHorizontalIcon,
+  HomeIcon,
+  HomeModernIcon,
+  ArrowLeftOnRectangleIcon,
+} from "@heroicons/react/20/solid";
 import { useClickOutside, useHotkeys, useWindowScroll } from "@mantine/hooks";
 import classNames from "classnames";
 import { signOut } from "next-auth/react";
@@ -83,12 +88,25 @@ const BaseNav: React.FC<BaseNavProps> = ({
                 key: "/preferences",
                 component: (
                   <MenuButtonContainer>
-                    <AdjustmentsIcon className="h-6 w-6 group-hover:animate-pulse" /> Preferências
+                    <AdjustmentsHorizontalIcon className="h-6 w-6 group-hover:animate-pulse" />{" "}
+                    Preferências
                   </MenuButtonContainer>
                 ),
                 buttonProps: {
                   onClick: () => push("/preferences"),
                   className: applyActiveClassnameToContainer(["/preferences"].includes(pathname)),
+                },
+              },
+              {
+                key: "/properties",
+                component: (
+                  <MenuButtonContainer>
+                    <HomeModernIcon className="h-6 w-6 group-hover:animate-pulse" /> Propriedades
+                  </MenuButtonContainer>
+                ),
+                buttonProps: {
+                  onClick: () => push("/properties"),
+                  className: applyActiveClassnameToContainer(["/properties"].includes(pathname)),
                 },
               },
             ]}
@@ -106,7 +124,7 @@ const BaseNav: React.FC<BaseNavProps> = ({
                 key: "logout-btn",
                 component: (
                   <MenuButtonContainer>
-                    <LogoutIcon className="h-6 w-6" /> Sair
+                    <ArrowLeftOnRectangleIcon className="h-6 w-6" /> Sair
                   </MenuButtonContainer>
                 ),
                 buttonProps: { onClick: () => signOut() },

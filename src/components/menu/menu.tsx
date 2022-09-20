@@ -1,5 +1,5 @@
 import { Disclosure, Transition } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/solid";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import classNames from "classnames";
 import { merge } from "lodash";
 import { DetailedHTMLProps, HTMLAttributes } from "react";

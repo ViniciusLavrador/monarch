@@ -1,4 +1,4 @@
-import { XIcon } from "@heroicons/react/solid";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useForm, zodResolver } from "@mantine/form";
 import { useEffect } from "react";
 import { z } from "zod";
@@ -85,7 +85,7 @@ const PropertiesTypesForm: React.FC = () => {
                 onClick={() => handleRemove(id)}
               >
                 {name}
-                <XIcon className="w-4 h-4 hidden group-hover:inline-block animate-pulse ml-2" />
+                <XMarkIcon className="w-4 h-4 hidden group-hover:inline-block animate-pulse ml-2" />
               </span>
             ))
           : "Nenhum tipo de categoria foi encontrado."}
