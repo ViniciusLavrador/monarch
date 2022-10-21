@@ -4,7 +4,7 @@ import { withTRPC } from "@trpc/next";
 import superjson from "superjson";
 import { SessionProvider } from "next-auth/react";
 
-import LoadingIndicator from "../components/loading-indicator/loading-indicator";
+import LoadingIndicator from "../hooks/use-loading/loading-indicator";
 import useLoading from "../hooks/use-loading/use-loading";
 
 import * as layouts from "../layouts";
@@ -13,6 +13,7 @@ import type { AppRouter } from "../server/router";
 import { AppProps } from "next/app";
 import React from "react";
 import Head from "next/head";
+import Modal from "../hooks/use-modal/modal";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -37,6 +38,7 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }: AppPropsWith
           <LoadingIndicator show={isLoading} />
         </>
       </Layout>
+      <Modal />
     </SessionProvider>
   );
 };

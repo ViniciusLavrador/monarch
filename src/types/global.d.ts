@@ -1,10 +1,20 @@
 import { NextPage } from "next";
+import { ButtonHTMLAttributes, ComponentType, DetailedHTMLProps, HTMLAttributes } from "react";
 import * as layouts from "../layouts";
 
 export declare global {
+  // HTML Shorthands
+  type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+  type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
+
   // Utilities
   export type FCWithChildren<P = {}> = React.FC<React.PropsWithChildren<P>>;
   export type WithSomeRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+  export type PropsFromComponentType<C extends ComponentType<any>> = C extends ComponentType<
+    infer P
+  >
+    ? P
+    : never;
 
   // Icons
   export type HeroIcon = (props: React.ComponentProps<"svg">) => JSX.Element;

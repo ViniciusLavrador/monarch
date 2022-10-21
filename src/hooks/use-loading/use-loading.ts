@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import loadingAtom from "../../jotai/atoms/loading";
+import loadingAtom from "./loading-atom";
 
 const useLoading = (key?: string) => {
   const [isLoading, setIsLoading] = useAtom(loadingAtom);

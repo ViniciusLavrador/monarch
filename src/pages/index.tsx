@@ -1,6 +1,5 @@
 import type { GetServerSideProps } from "next";
 import { Session } from "next-auth";
-import Head from "next/head";
 
 import { getServerSidePropsWithSession } from "../utils/auth";
 
