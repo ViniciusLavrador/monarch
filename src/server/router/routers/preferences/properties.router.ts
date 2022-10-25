@@ -1,3 +1,4 @@
+import { Status } from "@prisma/client";
 import { z } from "zod";
 import { activeRecords } from "../../../../utils/db";
 import { createRouter } from "../../context";
@@ -14,6 +15,7 @@ export const propertyPreferencesRouter = createRouter()
       return await ctx.prisma.propertyType.create({
         data: {
           name: input,
+          status: Status.ACTIVE,
         },
       });
     },

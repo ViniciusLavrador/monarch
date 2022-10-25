@@ -1,5 +1,6 @@
 import classNames from "classnames";
-import { DetailedHTMLProps, SelectHTMLAttributes, useId } from "react";
+import Image from "next/image";
+import React, { DetailedHTMLProps, SelectHTMLAttributes, useId } from "react";
 
 type SelectProps = DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> & {
   label: React.ReactNode;
@@ -7,35 +8,65 @@ type SelectProps = DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HT
     React.LabelHTMLAttributes<HTMLLabelElement>,
     HTMLLabelElement
   >;
+  variant?: "primary" | "secondary";
+  options?: SelectOptionProps[];
+  required?: boolean;
 };
 
-const Select: FCWithChildren<SelectProps> = ({
+const inputStylesMap: Record<NonNullable<SelectProps["variant"]>, string> = {
+  primary:
+    "bg-valhalla-50 border-valhalla-600 placeholder-gray-400 text-white focus:ring-yellow-500 focus:border-yellow-500",
+  secondary:
+    "bg-gray-50 border-gray-600 placeholder-gray-400 text-valhalla-400 focus:ring-yellow-500 focus:border-yellow-500",
+};
+
+const labelStylesMap: Record<NonNullable<SelectProps["variant"]>, string> = {
+  primary: "text-gray-300",
+  secondary: "text-valhalla-300",
+};
+
+const Select: React.FC<SelectProps> = ({
   children,
   label,
   labelProps,
   className,
   id,
+  variant = "primary",
+  options = [],
   ...props
 }) => {
   const generatedId = useId();
   const { className: labelInboundClassname, ...otherLabelProps } = labelProps || {};
 
   const labelClassname = classNames(
-    "block mb-2 text-sm font-medium text-gray-300",
+    "block mb-2 text-sm font-medium",
+    labelStylesMap[variant],
     labelInboundClassname,
+  );
+
+  const inputClassname = classNames(
+    "text-sm rounded-lg block w-full p-2.5 cursor-pointer border",
+    inputStylesMap[variant],
   );
 
   return (
     <div className={className}>
-      <label htmlFor={id || generatedId} className={labelClassname} {...otherLabelProps}>
-        {label}
-      </label>
-      <select
-        id={id || generatedId}
-        className="cursor-pointer w-full rounded-lg text-white border bg-valhalla-50 border-valhalla-600 focus:ring-yellow-500 focus:border-yellow-500"
-        {...props}
+      <label
+        htmlFor={id || generatedId}
+        className={classNames("relative", labelClassname)}
+        {...otherLabelProps}
       >
-        {children}
+        {label}
+        {props.required && (
+          <span className="text-red-500 font-bold text-lg absolute -top-1 ml-1">*</span>
+        )}
+      </label>
+      <select id={id || generatedId} className={inputClassname} {...props}>
+        {options.map(({ key, label, ...optionProps }) => (
+          <option key={key} {...optionProps}>
+            {label}
+          </option>
+        ))}
       </select>
     </div>
   );

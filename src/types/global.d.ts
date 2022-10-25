@@ -1,11 +1,23 @@
 import { NextPage } from "next";
-import { ButtonHTMLAttributes, ComponentType, DetailedHTMLProps, HTMLAttributes } from "react";
+import {
+  ButtonHTMLAttributes,
+  ComponentType,
+  DetailedHTMLProps,
+  HTMLAttributes,
+  InputHTMLAttributes,
+  OptionHTMLAttributes,
+} from "react";
 import * as layouts from "../layouts";
 
 export declare global {
   // HTML Shorthands
   type DivProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
   type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
+  type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+  type SelectOptionProps = DetailedHTMLProps<
+    OptionHTMLAttributes<HTMLOptionElement>,
+    HTMLOptionElement
+  >;
 
   // Utilities
   export type FCWithChildren<P = {}> = React.FC<React.PropsWithChildren<P>>;

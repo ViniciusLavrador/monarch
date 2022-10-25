@@ -87,13 +87,7 @@ model Property {
     name   String
     status Status @default(INACTIVE)
 
-    type   PropertyType @relation(fields: [typeId], references: [id])
-    typeId Int
-}
-
-model PropertyAddress {
-    id Int @id @default(autoincrement())
-
+    // Address
     street                 String
     number                 String
     zipCode                String
@@ -102,7 +96,10 @@ model PropertyAddress {
     Country                String
     additionalAddressLine1 String?
     additionalAddressLine2 String?
+    lat                    Decimal? @db.Decimal(10, 6)
+    long                   Decimal? @db.Decimal(10, 6)
 
-    lat  Decimal? @db.Decimal(10, 6)
-    long Decimal? @db.Decimal(10, 6)
+    // Relations
+    type   PropertyType @relation(fields: [typeId], references: [id])
+    typeId Int
 }

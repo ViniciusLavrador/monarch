@@ -12,3 +12,11 @@ body {
   @apply h-full m-0;
   @apply bg-gradient-to-b from-valhalla-500 to-valhalla-700 bg-no-repeat bg-fixed;
 }
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}

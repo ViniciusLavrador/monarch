@@ -1,6 +1,5 @@
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useForm, zodResolver } from "@mantine/form";
-import { useEffect } from "react";
 import { z } from "zod";
 import useLoading from "../../../../../../hooks/use-loading/use-loading";
 import { trpc } from "../../../../../../utils/trpc";
