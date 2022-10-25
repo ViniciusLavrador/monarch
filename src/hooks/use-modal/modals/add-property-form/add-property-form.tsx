@@ -9,8 +9,11 @@ import { AddPropertyFormProvider } from "./add-property-form-context";
 import RTEInput from "../../../../components/rte-input/rte-input";
 import useLoading from "../../../use-loading/use-loading";
 import useModal from "../../use-modal";
+import { notifyError, notifySuccess } from "../../../../utils/notifications";
+import { useState } from "react";
 
 const AddPropertyFormModal: Modal.DynamicModalContentType = ({}) => {
+  const [disabledSubmission, setDisabledSubmission] = useState(false);
   const { popModalKey } = useModal();
   const form = useAddPropertyForm();
   const { addLoadingForKey, removeLoadingForKey } = useLoading("createPropertyMutation");
@@ -19,9 +22,20 @@ const AddPropertyFormModal: Modal.DynamicModalContentType = ({}) => {
   });
 
   const createPropertyMutation = trpc.useMutation("properties.create", {
-    onMutate: addLoadingForKey,
-    onSuccess: popModalKey,
-    onError: ({ message }) => console.error("error", { message }),
+    onMutate: () => {
+      addLoadingForKey();
+      setDisabledSubmission(true);
+    },
+    onSuccess: () =>
+      notifySuccess({
+        message: "Propriedade adicionada com sucesso",
+        onClose: popModalKey,
+      }),
+    onError: (err) => {
+      setDisabledSubmission(false);
+      console.log({ err });
+      notifyError({ message: err.message });
+    },
     onSettled: removeLoadingForKey,
   });
 
@@ -76,7 +90,7 @@ const AddPropertyFormModal: Modal.DynamicModalContentType = ({}) => {
           {...form.getInputProps("description")}
         />
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" disabled={disabledSubmission}>
           Salvar
         </Button>
       </form>

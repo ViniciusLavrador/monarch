@@ -19,7 +19,7 @@ const useAddPropertyForm = () => {
       }
 
       return {
-        name: values.name,
+        name: values.name.trim(),
         type: parseInt(values.type, 10),
         description: values.description,
         address: {

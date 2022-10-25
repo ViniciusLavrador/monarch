@@ -21,7 +21,6 @@ const Home: NextPageWithLayout<HomeProps> = (props) => {
       <div className="h-screen">
         <div className="flex flex-row gap-10"></div>
       </div>
-      <div className="h-screen">hey</div>
     </>
   );
 };

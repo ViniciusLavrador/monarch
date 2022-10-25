@@ -11,7 +11,10 @@ export const propertiesRouter = createProtectedRouter()
   })
   .mutation("create", {
     input: z.object({
-      name: z.string(),
+      name: z
+        .string()
+        .trim()
+        .min(1, { message: "Name must be at least one char long (without spaces)" }),
       type: z.number(),
       address: z.object({
         placeID: z.string(),

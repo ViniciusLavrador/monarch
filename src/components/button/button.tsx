@@ -15,7 +15,13 @@ const Button: FCWithChildren<ButtonProps> = ({
   ...props
 }) => {
   if (!variant) variant = "primary";
-  if (variant === "muted") props.disabled = true;
+
+  // Guarantee that muted and disabled come together
+  if (variant === "muted") {
+    props.disabled = true;
+  } else if (props.disabled) {
+    variant = "muted";
+  }
 
   const primaryStyles = [
     {
