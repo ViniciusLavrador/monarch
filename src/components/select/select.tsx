@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import Image from "next/image";
-import React, { DetailedHTMLProps, SelectHTMLAttributes, useId } from "react";
+import React, { DetailedHTMLProps, KeyboardEvent, SelectHTMLAttributes, useId } from "react";
 
 type SelectProps = DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> & {
   label: React.ReactNode;
@@ -11,6 +11,7 @@ type SelectProps = DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HT
   variant?: "primary" | "secondary";
   options?: SelectOptionProps[];
   required?: boolean;
+  preventDefaultOnEnter?: boolean;
 };
 
 const inputStylesMap: Record<NonNullable<SelectProps["variant"]>, string> = {
@@ -33,8 +34,22 @@ const Select: React.FC<SelectProps> = ({
   id,
   variant = "primary",
   options = [],
+  preventDefaultOnEnter,
+  onKeyDown: externalOnKeyDown,
   ...props
 }) => {
+  const onKeyDown = (ev: KeyboardEvent<HTMLSelectElement>) => {
+    if (preventDefaultOnEnter && ev.key === "Enter") {
+      ev.preventDefault();
+    }
+
+    if (externalOnKeyDown) {
+      return externalOnKeyDown(ev);
+    }
+
+    return false;
+  };
+
   const generatedId = useId();
   const { className: labelInboundClassname, ...otherLabelProps } = labelProps || {};
 
@@ -61,7 +76,7 @@ const Select: React.FC<SelectProps> = ({
           <span className="text-red-500 font-bold text-lg absolute -top-1 ml-1">*</span>
         )}
       </label>
-      <select id={id || generatedId} className={inputClassname} {...props}>
+      <select id={id || generatedId} className={inputClassname} onKeyDown={onKeyDown} {...props}>
         {options.map(({ key, label, ...optionProps }) => (
           <option key={key} {...optionProps}>
             {label}

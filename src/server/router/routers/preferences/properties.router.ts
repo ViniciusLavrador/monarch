@@ -15,7 +15,7 @@ export const propertyPreferencesRouter = createRouter()
       return await ctx.prisma.propertyType.create({
         data: {
           name: input,
-          status: Status.ACTIVE,
+          status: "ACTIVE",
         },
       });
     },

@@ -4,7 +4,9 @@ import { createProtectedRouter } from "../../protected-router";
 export const propertiesRouter = createProtectedRouter()
   .query("getAll", {
     resolve({ ctx }) {
-      return ctx.prisma.property.findMany({});
+      return ctx.prisma.property.findMany({
+        where: { status: "ACTIVE" },
+      });
     },
   })
   .mutation("create", {
@@ -26,7 +28,13 @@ export const propertiesRouter = createProtectedRouter()
       }),
     }),
     resolve({ ctx, input }) {
-      console.log({ input });
-      return input;
+      return ctx.prisma.property.create({
+        data: {
+          status: "ACTIVE",
+          name: input.name,
+          typeId: input.type,
+          ...input.address,
+        },
+      });
     },
   });

@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, useState } from "react";
+import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
 
 import { Autocomplete, useLoadScript } from "@react-google-maps/api";
 
@@ -32,16 +32,7 @@ const PlacesInput: React.FC<ComponentPropsWithoutRef<typeof Input>> = ({ classNa
         }
       }}
     >
-      <Input
-        {...props}
-        autoComplete="off"
-        onKeyDown={(ev) => {
-          if (ev.key === "enter") {
-            ev.preventDefault();
-            return false;
-          }
-        }}
-      />
+      <Input {...props} autoComplete="off" preventDefaultOnEnter />
     </Autocomplete>
   ) : (
     <Input className={className} {...props} />

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { DetailedHTMLProps, InputHTMLAttributes, PropsWithoutRef, useId, forwardRef } from "react";
+import { DetailedHTMLProps, InputHTMLAttributes, useId, KeyboardEvent } from "react";
 import { IMask } from "react-imask";
 import BaseMaskedInput from "./base-masked-input";
 
@@ -11,6 +11,7 @@ type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLI
   >;
   variant?: "primary" | "secondary";
   maskProps?: IMask.AnyMaskedOptions;
+  preventDefaultOnEnter?: boolean;
 };
 
 const inputStylesMap: Record<NonNullable<InputProps["variant"]>, string> = {
@@ -32,8 +33,21 @@ const Input: React.FC<InputProps> = ({
   id,
   variant = "primary",
   maskProps,
+  preventDefaultOnEnter,
+  onKeyDown: extenalOnKeyDown,
   ...props
 }) => {
+  const onKeyDown = (ev: KeyboardEvent<HTMLInputElement>) => {
+    if (preventDefaultOnEnter && ev.key === "Enter") {
+      ev.preventDefault();
+    }
+
+    if (extenalOnKeyDown) {
+      return extenalOnKeyDown(ev);
+    }
+
+    return false;
+  };
   const { className: labelInboundClassname, ...otherLabelProps } = labelProps || {};
 
   const generatedId = useId();
@@ -51,6 +65,7 @@ const Input: React.FC<InputProps> = ({
         "border text-sm rounded-lg block w-full p-2.5",
         inputStylesMap[variant],
       )}
+      onKeyDown={onKeyDown}
       maskProps={maskProps}
       {...props}
     />
@@ -61,6 +76,12 @@ const Input: React.FC<InputProps> = ({
         "border text-sm rounded-lg block w-full p-2.5",
         inputStylesMap[variant],
       )}
+      onKeyDown={(ev) => {
+        if (ev.key === "Enter") {
+          ev.preventDefault();
+          return false;
+        }
+      }}
       {...props}
     />
   );

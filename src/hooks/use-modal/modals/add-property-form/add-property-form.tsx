@@ -7,25 +7,32 @@ import useAddPropertyForm from "./use-property-form";
 import PlacesInput from "./inputs/places-input";
 import { AddPropertyFormProvider } from "./add-property-form-context";
 import RTEInput from "../../../../components/rte-input/rte-input";
+import useLoading from "../../../use-loading/use-loading";
+import useModal from "../../use-modal";
 
 const AddPropertyFormModal: Modal.DynamicModalContentType = ({}) => {
+  const { popModalKey } = useModal();
   const form = useAddPropertyForm();
-  const { data, isLoading } = trpc.useQuery(["preferences.properties.types.getAll"], {
+  const { addLoadingForKey, removeLoadingForKey } = useLoading("createPropertyMutation");
+  const { data } = trpc.useQuery(["preferences.properties.types.getAll"], {
     onSuccess: (data) => data[0] && form.setFieldValue("type", data[0].id.toString()),
   });
 
   const createPropertyMutation = trpc.useMutation("properties.create", {
-    onSuccess: (data) => console.log("success", { data }),
+    onMutate: addLoadingForKey,
+    onSuccess: popModalKey,
     onError: ({ message }) => console.error("error", { message }),
+    onSettled: removeLoadingForKey,
   });
 
   return (
     <AddPropertyFormProvider form={form}>
       <form
-        onSubmit={form.onSubmit((data) => console.log({ data }))}
+        onSubmit={form.onSubmit((data) => createPropertyMutation.mutate(data))}
         className="grid grid-cols-6 gap-4"
       >
         <Input
+          preventDefaultOnEnter
           variant="secondary"
           type="text"
           id="property-name"
@@ -36,6 +43,7 @@ const AddPropertyFormModal: Modal.DynamicModalContentType = ({}) => {
           {...form.getInputProps("name")}
         />
         <Select
+          preventDefaultOnEnter
           label="Tipo"
           variant="secondary"
           className="col-span-full md:col-span-2"
