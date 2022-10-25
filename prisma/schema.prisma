@@ -92,12 +92,13 @@ model Property {
     number                 String
     zipCode                String
     city                   String
-    State                  String
-    Country                String
+    state                  String
+    country                String
     additionalAddressLine1 String?
     additionalAddressLine2 String?
     lat                    Decimal? @db.Decimal(10, 6)
     long                   Decimal? @db.Decimal(10, 6)
+    placeID                String?
 
     // Relations
     type   PropertyType @relation(fields: [typeId], references: [id])

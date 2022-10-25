@@ -11,13 +11,27 @@ namespace AddPropertyForm {
   export type FormValues = {
     name: string;
     type: string;
+    description: string;
     place: PlaceResult;
   };
 
   export type FormValuesAfterTransformation = {
     name: string;
     type: number;
-    place: PlaceResult;
+    description: string;
+    address: {
+      placeID: string;
+      street: string;
+      number: string;
+      zipCode: string;
+      city: string;
+      state: string;
+      country: string;
+      lat?: number;
+      long?: number;
+      additionalAddressLine1?: string;
+      additionalAddressLine2?: string;
+    };
   };
 
   export type FormTrasformFunction = (

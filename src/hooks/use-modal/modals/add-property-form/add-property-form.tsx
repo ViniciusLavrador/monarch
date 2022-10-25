@@ -6,6 +6,7 @@ import Button from "../../../../components/button/button";
 import useAddPropertyForm from "./use-property-form";
 import PlacesInput from "./inputs/places-input";
 import { AddPropertyFormProvider } from "./add-property-form-context";
+import RTEInput from "../../../../components/rte-input/rte-input";
 
 const AddPropertyFormModal: Modal.DynamicModalContentType = ({}) => {
   const form = useAddPropertyForm();
@@ -21,7 +22,7 @@ const AddPropertyFormModal: Modal.DynamicModalContentType = ({}) => {
   return (
     <AddPropertyFormProvider form={form}>
       <form
-        onSubmit={form.onSubmit((data) => console.log(data))}
+        onSubmit={form.onSubmit((data) => console.log({ data }))}
         className="grid grid-cols-6 gap-4"
       >
         <Input
@@ -31,18 +32,17 @@ const AddPropertyFormModal: Modal.DynamicModalContentType = ({}) => {
           placeholder="Apartamento 2 Quartos - Empreendimento Villas"
           required
           label="Nome"
-          className="col-span-5"
+          className="col-span-full md:col-span-4"
           {...form.getInputProps("name")}
         />
         <Select
           label="Tipo"
           variant="secondary"
-          className="col-span-1"
+          className="col-span-full md:col-span-2"
           required
           options={data && data.map(({ id, name }) => ({ key: id, value: id, label: name }))}
           {...form.getInputProps("type")}
         />
-
         <PlacesInput
           variant="secondary"
           type="text"
@@ -50,7 +50,24 @@ const AddPropertyFormModal: Modal.DynamicModalContentType = ({}) => {
           placeholder="Endereço"
           label="Endereço da Propriedade"
           className="col-span-full"
+          required
         />
+        <RTEInput
+          required
+          label="Descrição da Propriedade"
+          className="col-span-full"
+          variant="secondary"
+          controls={[
+            ["bold", "italic", "underline", "strike", "clean"],
+            ["h1", "h2", "h3", "h4", "h5", "h6"],
+            ["unorderedList", "orderedList"],
+            ["link", "blockquote"],
+            ["alignLeft", "alignCenter", "alignRight"],
+            ["sup", "sub"],
+          ]}
+          {...form.getInputProps("description")}
+        />
+
         <Button variant="primary" type="submit">
           Salvar
         </Button>

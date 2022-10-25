@@ -1,4 +1,4 @@
-import { ComponentProps, ComponentPropsWithoutRef, useState } from "react";
+import { ComponentPropsWithoutRef, useState } from "react";
 
 import { Autocomplete, useLoadScript } from "@react-google-maps/api";
 
@@ -23,7 +23,6 @@ const PlacesInput: React.FC<ComponentPropsWithoutRef<typeof Input>> = ({ classNa
     <Autocomplete
       className={className}
       onLoad={(autoCompleteObj) => setAutocomplete(autoCompleteObj)}
-      fields={["place_id", "geometry.location"]}
       onPlaceChanged={() => {
         if (autocomplete) {
           const place = autocomplete.getPlace();
