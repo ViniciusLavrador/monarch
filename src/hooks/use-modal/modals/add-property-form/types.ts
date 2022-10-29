@@ -27,6 +27,7 @@ namespace AddPropertyForm {
       city: string;
       state: string;
       country: string;
+      formattedAddress: string;
       lat?: number;
       long?: number;
       additionalAddressLine1?: string;

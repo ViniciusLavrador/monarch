@@ -2,19 +2,8 @@
 import type { AppRouter } from "../server/router";
 import { createReactQueryHooks } from "@trpc/react";
 import type { inferProcedureOutput, inferProcedureInput } from "@trpc/server";
-import { notifyError } from "./notifications";
 
 export const trpc = createReactQueryHooks<AppRouter>();
-
-export const useQuery = ([paths, opts]: Parameters<typeof trpc.useQuery>) => {
-  return trpc.useQuery(paths, {
-    ...opts,
-    onError: (error) => {
-      opts && opts.onError && opts.onError(error);
-      notifyError({ message: error.message });
-    },
-  });
-};
 
 /**
  * This is a helper method to infer the output of a query resolver

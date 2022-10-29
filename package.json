@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "connect:db": "pscale connect monarchdb main --port 3309",
-    "connect:db:shadow": "pscale connect monarchdb shadow --port 3310",
+    "connect:db:development": "pscale connect monarchdb development --port 3310",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

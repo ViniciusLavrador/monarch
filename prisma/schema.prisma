@@ -94,6 +94,7 @@ model Property {
     city                   String
     state                  String
     country                String
+    formattedAddress       String
     additionalAddressLine1 String?
     additionalAddressLine2 String?
     lat                    Decimal? @db.Decimal(10, 6)

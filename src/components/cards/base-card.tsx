@@ -20,7 +20,7 @@ const BaseCard: FCWithChildren<BaseCardProps> = ({
     <div className={classNames("bg-valhalla-400 rounded-lg px-6 py-6", className)} {...props}>
       <div className="h-full flex flex-col gap-4">
         {title && <span className="font-normal tracking-widest text-xs text-gray-50">{title}</span>}
-        <div className="grow">{children}</div>
+        <div className="grow max-h-full">{children}</div>
         {footer}
       </div>
     </div>

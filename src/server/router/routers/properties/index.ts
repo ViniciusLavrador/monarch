@@ -24,6 +24,7 @@ export const propertiesRouter = createProtectedRouter()
         city: z.string(),
         state: z.string(),
         country: z.string(),
+        formattedAddress: z.string(),
         lat: z.number().optional(),
         long: z.number().optional(),
         additionalAddressLine1: z.string().optional(),

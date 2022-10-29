@@ -32,6 +32,7 @@ const useAddPropertyForm = () => {
           zipCode: addressComponents.postal_code || "",
           lat: values.place.geometry?.location?.lat(),
           long: values.place.geometry?.location?.lng(),
+          formattedAddress: values.place.formatted_address || "",
         },
       };
     },
