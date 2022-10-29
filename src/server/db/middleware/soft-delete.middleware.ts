@@ -1,5 +1,5 @@
 import { Prisma, Status } from "@prisma/client";
-import { config } from "node-config-ts";
+import config from "../../../../config/config";
 
 const softDeleteMiddleware: Prisma.Middleware<any> = async (params, next) => {
   if (

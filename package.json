@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
-    "postinstall": "prisma generate && node-config-ts",
+    "postinstall": "prisma generate",
     "prepare": "husky install",
     "prettify": "prettier --write ."
   },
@@ -39,7 +39,6 @@
     "lodash": "^4.17.21",
     "next": "12.2.3",
     "next-auth": "^4.10.3",
-    "node-config-ts": "^3.1.0",
     "react": "18.2.0",
     "react-chartjs-2": "^4.3.1",
     "react-dom": "18.2.0",
