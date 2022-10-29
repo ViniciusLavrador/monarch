@@ -18,12 +18,13 @@ const PropertiesPage: NextPageWithLayout = () => {
           {data &&
             data.map((d) => (
               <div
+                key={d.id}
                 className={classNames(
                   "flex flex-row justify-between w-full p-4 rounded-md items-center",
                   "bg-valhalla-50 hover:bg-valhalla-100 transition-all duration-200 cursor-pointer",
                 )}
               >
-                <div key={d.id} className="text-white">
+                <div className="text-white">
                   <h3 className="font-bold">{d.name}</h3>
                   <p className="font-light text-sm">{d.formattedAddress}</p>
                 </div>
